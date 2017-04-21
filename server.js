@@ -2,8 +2,7 @@ var express = require('express');
 var app     = express();
 var mongoose = require("mongoose");
 
-const DB =
-  process.env.DB | "mongodb://localhost/hostel_app_test";
+const DB    = process.env.DB | "mongodb://localhost/hostel_app_test";
 const IP    = process.env.IP | "0.0.0.0";
 const PORT  = process.env.PORT | "1337";
 
