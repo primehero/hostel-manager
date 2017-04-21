@@ -6,6 +6,8 @@ var DB    = process.env.DB    | "mongodb://localhost/hostel_app_test";
 var IP    = process.env.IP    | "0.0.0.0";
 var PORT  = process.env.PORT  | "1337";
 
+console.log(DB);
+
 mongoose.connect(DB);
 app.use(express.static(
   __dirname + "/public") );
