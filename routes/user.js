@@ -1,23 +1,18 @@
 var routes = require("express").Router();
 var User = require("../models/user");
-var middleware 	= require("../middleware");
+
 
 // INDEX route
-routes.get('/', middleware.isAdmin, function(req, res) {
+routes.get('/', function(req, res) {
   User.find({}, (err, foundUsers) => {
     if (err)
-      req.flash('error', err);
-    res.render('user/index', { users : foundUsers });
+      res.json({ error : err });
+    res.json({ users : foundUsers });
   });
 });
 
-// NEW route
-routes.get('/new', middleware.isAdmin, function(req, res) {
-  res.render('user/new');
-});
-
 // CREATE route
-routes.post('/', middleware.isAdmin, function(req, res) {
+routes.post('/', function(req, res) {
   var newUser = new User({ username : req.body.username });
   User.register(newUser, req.body.password, function(err, user) {
     if (err)
@@ -27,7 +22,7 @@ routes.post('/', middleware.isAdmin, function(req, res) {
     res.redirect('/user');
   });
 });
-
+/*
 // SHOW route
 routes.get("/:id", middleware.isAdmin, function(req, res) {
   User.findById(req.params.id, (err, foundUser) => {
@@ -49,5 +44,5 @@ routes.delete('/:id', middleware.isAdmin, function(req, res) {
     res.redirect('/user');
   });
 });
-
+*/
 module.exports = routes;

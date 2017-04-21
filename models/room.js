@@ -1,10 +1,10 @@
-mongoose = require("mongoose");
+var mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
 roomSchema = mongoose.Schema({
 	hostel: {
 		type: 	mongoose.Schema.Types.ObjectId,
-    	ref: 	"Hostel"
+  	ref: 	"Hostel"
 	},
 	floor: String,
 	roomNumber: String,

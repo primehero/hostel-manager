@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
 var tenantSchema = mongoose.Schema({
 	name: String,
@@ -60,7 +61,6 @@ tenantSchema.methods.addPayment = function(mongooseId, paymentId) {
 		});
 	});
 };
-
 
 
 module.exports = mongoose.model("Tenant", tenantSchema);

@@ -1,0 +1,30 @@
+            <div class="col-md-12">
+              <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-striped">
+                      <thead>
+                          <tr>
+                              <th>Room Number</th>
+                              <th>Hostel Name</th>
+                              <th>Floor Name</th>
+                              <th>Price</th>
+                              <th>Vacancies</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                              <th>More</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="r in rooms">
+                              <td>{{r.roomNumber}}</td>
+                              <td>{{r.hostel.name}}</td>
+                              <td>{{r.floor}}</td>
+                              <td>Rs. {{r.cost}}</td>
+                              <td>{{r.numBeds - r.numOccupied}}</td>
+                              <td><a href="#/room/{{cat.name}}/edit">Edit</a></td>
+                              <td><a href="#/room/{{cat.name}}/delete">Delete</a></td>
+                              <td><a href="#/room/{{cat.name}}">More</a></td>
+                          </tr>
+                      </tbody>
+                  </table><!-- ./table -->
+              </div><!-- ./table responsive -->
+            </div>

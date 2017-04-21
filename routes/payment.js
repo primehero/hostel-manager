@@ -1,20 +1,19 @@
 var routes = require("express").Router();
 var Payment = require("../models/payment");
+var Tenant = require("../models/tenant");
 
 
 // INDEX route
-routes.get("/", middleware.isLoggedIn, (req, res) => {
-	Payment.find({ tenant : req.query.tenant }, (err, foundPayments) => {
-		if (err) {
-			req.flash("error", err);
-			res.redirect("/tenant/" + req.query.tenant);
-		}
-		res.render("payment/index", { payments : foundPayments });
+routes.get("/", (req, res) => {
+	Payment.find({}).populate('tenant').exec((err, foundPayments) => {
+		if (err)
+			res.json({ error : err });
+		res.json({ payments : foundPayments });
 	});
 });
 
 // CREATE route
-routes.post("/", middleware.isLoggedIn, (req, res) => {
+routes.post("/", (req, res) => {
 	Payment.create(req.body, (err, createdPayment) => {
 		if (err)
 			req.flash("error", err);
@@ -23,6 +22,7 @@ routes.post("/", middleware.isLoggedIn, (req, res) => {
 		res.redirect("/tenant/" + createdPayment.tenant);
 	});
 });
+/*
 
 // NEW route
 routes.get("/new", middleware.isLoggedIn, (req, res) => {
@@ -78,6 +78,6 @@ routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
 	});
 });
 
-
+*/
 
 module.exports = routes;

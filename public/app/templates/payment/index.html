@@ -1,0 +1,28 @@
+            <div class="col-md-12">
+              <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-striped">
+                      <thead>
+                          <tr>
+                              <th>Title</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Tenant Name</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                              <th>More</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="p in payments">
+                              <td>{{p.title}}</td>
+                              <td>{{p.desc}}</td>
+                              <td>{{p.amount}}</td>
+                              <td>{{p.tenant.name}}</td>
+                              <td><a href="#/payment/{{cat.name}}/edit">Edit</a></td>
+                              <td><a href="#/payment/{{cat.name}}/delete">Delete</a></td>
+                              <td><a href="#/payment/{{cat.name}}">More</a></td>
+                          </tr>
+                      </tbody>
+                  </table><!-- ./table -->
+              </div><!-- ./table responsive -->
+            </div>

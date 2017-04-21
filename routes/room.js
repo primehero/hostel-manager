@@ -1,33 +1,26 @@
+/**
+ * ROOM ROUTES
+ * ====
+ */
+
 var routes 			= require("express").Router();
 var Room 				= require("../models/room");
-var Hostel 			= require("../models/hostel");
-var middleware 	= require("../middleware");
-
-// Most of the routes in rooms need authentication.
-// All of the methods absolutely need req.params.hostel
 
 // INDEX route
-routes.get("/", middleware.isLoggedIn, (req, res) => {
-	if (!req.query.hostel) {
-		req.flash("error", "Error finding room!");
-		res.redirect("/hostel");
-	}
-	let newRoomObject = new Room();
-	newRoomObject.getRelatedRooms(req.query.hostel)
-		.then((foundRooms) => {
-			res.render("room/index", { rooms : foundRooms });
-		})
-		.catch((err) => {
-			req.flash("error", JSON.stringify(err));
-			res.redirect("/hostel/" + req.query.hostel);
-		});
+routes.get("/", (req, res) => {
+	Room.find({}).populate('hostel').exec((err, foundRooms) => {
+		if (err)
+			res.json({error : err});
+		res.json({rooms : foundRooms});
+	});
 });
 
 // NEW route
-routes.get("/new", middleware.isLoggedIn, (req, res) => {
+routes.get("/new", (req, res) => {
 	res.render("room/new", { hostelId : req.query.hostel });
 });
 
+/*
 // CREATE route
 routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Room.create(req.body, (err, createdRoom) => {
@@ -107,5 +100,5 @@ routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
 	});
 });
 
-
+*/
 module.exports = routes;

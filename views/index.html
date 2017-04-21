@@ -40,9 +40,41 @@
 
             <div class="container-fluid">
 
-                <!-- VIEW -->
-                <ng-view>
-                </ng-view>
+              <!-- Page Heading -->
+              <div class="row">
+                  <div class="col-lg-12">
+
+                      <div ng-controller="HeaderCtrl">
+                        <h1 class="page-header">
+                            {{heading}}
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>
+                                <a href="#/">
+                                  Dashboard
+                                </a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-file"></i>
+                                 {{heading}}
+                            </li>
+                        </ol>
+                      </div>
+
+
+                      <div class="row">
+                          <!-- alerts -->
+                          <div ng-include="'/app/templates/alerts.html'"></div>
+                          <!-- VIEW -->
+                          <ng-view></ng-view>
+                      </div><!-- ./row -->
+
+                  </div><!-- ./ col -->
+              </div><!-- ./row -->
+
+
+
 
             </div>
             <!-- /.container-fluid -->

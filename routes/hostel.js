@@ -1,3 +1,8 @@
+/**
+ * HOSTEL ROUTES
+ * ====
+ */
+
 var routes 			= require("express").Router();
 var Hostel 			= require("../models/hostel");
 
@@ -11,22 +16,18 @@ routes.get("/", (req, res) => {
 	});
 });
 
-// NEW route
-routes.get("/new", (req, res) => {
-	// Get all the categories and push in.
-	Category.find({}, (err, foundCategories) => {
-		if (err) {
-			req.flash('error', err);
-			res.redirect('/hostel')
-		}
-		User.find({}, (err, foundUsers) => {
-			res.render("hostel/new", {
-				categories : foundCategories,
-				users : foundUsers
-			});
-		});
+// SHOW route
+routes.get('/:id', (req, res) => {
+	Hostel.findById(req.params.id)
+		.populate('category')
+		.populate('_creator._id')
+		.exec((err, foundHostel) => {
+		if (err)
+			res.json({ error : err });
+		res.json({ hostel : foundHostel });
 	});
 });
+
 
 // CREATE route
 /*
@@ -45,6 +46,7 @@ routes.get("/new", (req, res) => {
 		},
 		_username: String
 	}
+
 
 routes.post("/", middleware.isAdmin, (req, res) => {
 	// Category needs to be object id.
@@ -69,21 +71,9 @@ routes.post("/", middleware.isAdmin, (req, res) => {
 		});
 	});
 });
+*/
 
-// SHOW route
-routes.get('/:id', middleware.isLoggedIn, (req, res) => {
-	Hostel.findById(req.params.id)
-		.populate('category')
-		.populate('_creator._id')
-		.exec((err, foundHostel) => {
-		if (err) {
-			req.flash('error', err);
-			res.redirect('/hostel');
-		}
-		res.render('hostel/show', { hostel : foundHostel });
-	});
-});
-
+/*
 // EDIT route
 routes.get("/:id/edit", middleware.isAdmin, (req, res) => {
 	Category.find({}, (err, foundCategories) => {

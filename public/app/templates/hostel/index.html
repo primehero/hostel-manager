@@ -1,27 +1,3 @@
-<!-- Page Heading -->
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">
-            Hostels
-        </h1>
-        <ol class="breadcrumb">
-            <li>
-                <i class="fa fa-dashboard"></i>
-                <a href="#/">
-                  Dashboard
-                </a>
-            </li>
-            <li class="active">
-                <i class="fa fa-file"></i>
-                 Hostels
-            </li>
-        </ol>
-
-        <div class="row">
-
-            <div ng-include="'/app/templates/alerts.html'">
-            </div>
-
             <div class="col-md-12">
               <div class="table-responsive">
                   <table class="table table-bordered table-hover table-striped">
@@ -30,6 +6,9 @@
                               <th>Hostel Name</th>
                               <th>Hostel Address</th>
                               <th>Hostel Phone</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                              <th>More</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -37,14 +16,11 @@
                               <td>{{h.name}}</td>
                               <td>{{h.address}}</td>
                               <td>{{h.phone}}</td>
+                              <td><a href="#/hostel/{{h._id}}/edit">Edit</a></td>
+                              <td><a href="#/hostel/{{h._id}}/delete">Delete</a></td>
+                              <td><a href="#/hostel/{{h._id}}">More</a></td>
                           </tr>
                       </tbody>
                   </table><!-- ./table -->
               </div><!-- ./table responsive -->
             </div>
-        </div><!-- ./row -->
-
-
-    </div> <!-- col -->
-</div>
-<!-- /.row -->
