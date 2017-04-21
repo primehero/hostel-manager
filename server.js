@@ -2,11 +2,11 @@ var express = require('express');
 var app     = express();
 var mongoose = require("mongoose");
 
-var DB    = process.env.DB    | "mongodb://localhost/hostel_app_test";
-var IP    = process.env.IP    | "0.0.0.0";
-var PORT  = process.env.PORT  | "1337";
+var DB    = process.env.DB    || "mongodb://localhost/hostel_app_test";
+var IP    = process.env.IP    || "0.0.0.0";
+var PORT  = process.env.PORT  || "1337";
 
-console.log(DB);
+console.log("Database: " + DB);
 
 mongoose.connect(DB);
 app.use(express.static(
@@ -31,4 +31,5 @@ app.get("/app", (req, res) => {
 
 app.listen(PORT, IP, () => {
   console.log("App running at http://" + IP + ":" + PORT);
+  console.log(DB);
 });
