@@ -1,0 +1,16 @@
+{
+  "name": "my_first_app",
+  "version": "0.0.1",
+  "description": "My First angular Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongoose": "^4.9.5"
+  }
+}

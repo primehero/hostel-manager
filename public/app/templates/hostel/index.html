@@ -1,0 +1,50 @@
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Hostels
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-dashboard"></i>
+                <a href="#/">
+                  Dashboard
+                </a>
+            </li>
+            <li class="active">
+                <i class="fa fa-file"></i>
+                 Hostels
+            </li>
+        </ol>
+
+        <div class="row">
+
+            <div ng-include="'/app/templates/alerts.html'">
+            </div>
+
+            <div class="col-md-12">
+              <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-striped">
+                      <thead>
+                          <tr>
+                              <th>Hostel Name</th>
+                              <th>Hostel Address</th>
+                              <th>Hostel Phone</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="h in hostels">
+                              <td>{{h.name}}</td>
+                              <td>{{h.address}}</td>
+                              <td>{{h.phone}}</td>
+                          </tr>
+                      </tbody>
+                  </table><!-- ./table -->
+              </div><!-- ./table responsive -->
+            </div>
+        </div><!-- ./row -->
+
+
+    </div> <!-- col -->
+</div>
+<!-- /.row -->
