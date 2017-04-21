@@ -1,7 +1,7 @@
 {
-  "name": "my_first_app",
+  "name": "hostel_manager_angular",
   "version": "0.0.1",
-  "description": "My First angular Application",
+  "description": "Hostel Manager Application",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
