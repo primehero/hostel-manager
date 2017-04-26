@@ -5,10 +5,12 @@ var Tenant = require("../models/tenant");
 
 // INDEX route
 routes.get("/", (req, res) => {
-	Payment.find({}).populate('tenant').exec((err, foundPayments) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ payments : foundPayments });
+	Payment.find({})
+		.populate('tenant')
+		.exec((err, foundPayments) => {
+			if (err)
+				res.json({ error : err });
+			res.json({ payments : foundPayments });
 	});
 });
 
@@ -22,6 +24,19 @@ routes.post("/", (req, res) => {
 		res.redirect("/tenant/" + createdPayment.tenant);
 	});
 });
+
+// SHOW route
+routes.get("/:id", (req, res) => {
+	Payment.findById(req.params.id)
+	 	.populate('tenant')
+		.exec((err, foundPayment) => {
+			if (err)
+				res.json({ error : err });
+			res.json({ payment : foundPayment });
+	});
+});
+
+
 /*
 
 // NEW route

@@ -2,8 +2,12 @@
   let app = angular.module('mainApp', ['ngRoute', 'fetchModule']);
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
+
+      // Dash
+      // ====
       .when("/", {
-        templateUrl: "/app/templates/dashboard.html"
+        templateUrl: "/app/templates/dashboard.html",
+        controller: 'DashCtrl'
       })
 
       // CATEGORY
@@ -13,13 +17,13 @@
         templateUrl: "/app/templates/category/index.html",
         controller: "CatsCtrl"
       })
-      // Edit
-      /*
-      .when("/category/:id/edit", {
-        templateUrl: "/app/templates/category/show.html",
-        controller: "CatsShowCtrl"
+      // New
+      .when("/category/new", {
+        templateUrl: "/app/templates/category/new.html",
+        controller: "CatsNewCtrl"
       })
-      */
+
+
 
 
       // HOSTEL
@@ -36,19 +40,49 @@
       })
 
 
-
+      // ROOM
+      // ====
+      // Index
       .when("/room", {
         templateUrl: "/app/templates/room/index.html",
         controller: "RoomCtrl"
       })
+      // Show
+      .when("/room/:id", {
+        templateUrl: "/app/templates/room/show.html",
+        controller: "RoomShowCtrl"
+      })
+
+      // TENANT
+      // ====
+      // Index
       .when("/tenant", {
         templateUrl: "/app/templates/tenant/index.html",
         controller: "TenantCtrl"
       })
+      // Show
+      .when("/tenant/:id", {
+        templateUrl: "/app/templates/tenant/show.html",
+        controller: "TenantShowCtrl"
+      })
+
+      // payment
+      // ====
+      // Index
       .when("/payment", {
         templateUrl: "/app/templates/payment/index.html",
         controller: "PayCtrl"
       })
+      // Show
+      .when("/payment/:id", {
+        templateUrl: "/app/templates/payment/show.html",
+        controller: "PayShowCtrl"
+      })
+
+
+
+
+
       .when("/user", {
         templateUrl: "/app/templates/user/index.html",
         controller: "UserCtrl"

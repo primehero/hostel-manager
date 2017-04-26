@@ -1,11 +1,14 @@
-var express = require('express');
-var app     = express();
-var mongoose = require("mongoose");
+var express     = require('express');
+var app         = express();
+var mongoose    = require("mongoose");
+var bodyParser  = require("body-parser");
 
 var DB    = process.env.DB    || "mongodb://localhost/hostel_app_test";
 var IP    = process.env.IP    || "0.0.0.0";
 var PORT  = process.env.PORT  || "1337";
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 mongoose.connect(DB);
 app.use(express.static(
   __dirname + "/public") );

@@ -7,16 +7,22 @@
                     <th>Admin Priviliges</th>
                     <th>Edit</th>
                     <th>Delete</th>
-                    <th>More</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="u in users">
                     <td>{{u.username}}</td>
                     <td>{{u.admin}}</td>
-                    <td><a href="#/tenant/{{cat.name}}/edit">Edit</a></td>
-                    <td><a href="#/tenant/{{cat.name}}/delete">Delete</a></td>
-                    <td><a href="#/tenant/{{cat.name}}">More</a></td>
+                    <td>
+                      <a ng-hide="u.admin" href="#/tenant/{{cat.name}}/edit">
+                        Edit
+                      </a>
+                    </td>
+                    <td>
+                      <a ng-hide="u.admin" href="#/tenant/{{cat.name}}/delete">
+                        Delete
+                      </a>
+                    </td>
                 </tr>
             </tbody>
         </table><!-- ./table -->

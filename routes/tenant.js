@@ -25,6 +25,25 @@ routes.get("/", (req, res) => {
 
 });
 
+// SHOW route
+routes.get("/:id", (req, res) => {
+	Tenant.findById(req.params.id)
+	.populate('room')
+	.exec((err, foundTenant) => {
+		if (err)
+			res.json({ error : err });
+		// Populate hostel too.
+		Hostel.populate(foundTenant, {
+			path: 'room.hostel'
+		}, function(err, foundTenant) {
+			if (err)
+				res.json({ error : err });
+			res.json({ tenant : foundTenant });
+		});
+	});
+});
+
+
 // CREATE route
 
 /*

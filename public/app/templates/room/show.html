@@ -5,7 +5,7 @@
   ==================================================-->
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title"><b>{{hostel.name}} Details</b></h3>
+      <h3 class="panel-title"><b>Room Details</b></h3>
     </div>
     <div class="panel-body">
       <div class="row">
@@ -16,26 +16,21 @@
           <table class="table info-table">
             <tbody>
              <tr>
-                <td><b>Name</b>:</td>
-                <td>{{hostel.name}}</td>
+                <td><b>Room Number</b>:</td>
+                <td>{{room.roomNumber}}</td>
              </tr>
              <tr>
-                <td><b>Address</b>:</td>
-                <td>{{hostel.address}}</td>
+                <td><b>Floor Name</b>:</td>
+                <td>{{room.floor}}</td>
              </tr>
              <tr>
-                <td><b>About</b>:</td>
-                <td>{{hostel.description}}</td>
-
+                <td><b>Total Beds</b>:</td>
+                <td>{{room.numBeds}}</td>
             </tr>
             <tr>
-                <td><b>Phone</b>:</td>
-                <td>{{hostel.phone}}</td>
+                <td><b>Empty Beds</b>:</td>
+                <td>{{room.numBeds - room.numOccupied}}</td>
             </tr>
-            <tr>
-                <td><b>Category</b>:</td>
-                <td>{{hostel.category.name}}</td>
-             </tr>
             </tbody>
           </table><!-- ./info-table -->
         </div><!--table-responsive close-->
@@ -47,27 +42,19 @@
             <table class="table info-table">
                 <tbody>
                   <tr>
-                    <td><b>Warden</b>:</td>
-                    <td>{{hostel.warden.name}}</td>
+                    <td><b>Hostel Name</b>:</td>
+                    <td>{{room.hostel.name}}</td>
                   </tr>
                   <tr>
-                    <td><b>Warden Phone</b>:</td>
-                    <td>{{hostel.warden.phone}}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Warden Address</b>:</td>
-                    <td>{{hostel.warden.address}}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Owner</b>:</td>
-                    <td>{{hostel._creator._username}}</td>
+                    <td><b>Cost</b>:</td>
+                    <td>{{room.cost}}</td>
                   </tr>
                 </tbody>
             </table><!-- info-table -->
         </div><!--table-responsive close-->
       </div><!--col-md-6 close-->
     </div><!-- ./row -->
-    
+
     <!-- EDIT -->
     <a href="#/hostel/58ef57e67a310d0011d7ab5f/edit"
       class="btn btn-warning btn-xs">

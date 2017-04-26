@@ -1,0 +1,28 @@
+button.invisible-bg {
+	background-color: rgba(255, 255, 255, 0);
+	border: none;
+}
+
+/* BOOTSTRAP RESETS */
+.table th,
+.table td{
+	text-align: center;
+}
+
+.navbar.navbar-inverse {
+	border-radius: 0px;
+}
+
+li.list-group-item {
+	border-radius: 0px !important;
+}
+.table.info-table>tbody>tr>td,
+.table.info-table>tbody>tr>th,
+.table.info-table>tfoot>tr>td,
+.table.info-table>tfoot>tr>th,
+.table.info-table>thead>tr>td,
+.table.info-table>thead>tr>th {
+	    text-align:inherit;
+	    border-top: 0;
+			list-style-type: none;
+}

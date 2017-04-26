@@ -20,6 +20,18 @@ routes.get("/new", (req, res) => {
 	res.render("room/new", { hostelId : req.query.hostel });
 });
 
+// SHOW route
+routes.get("/:id", (req, res) => {
+	Room.findById(req.params.id)
+		.populate('hostel')
+		.exec((err, foundRoom) => {
+			if (err)
+				res.json({ error : err });
+		res.json({ room : foundRoom });
+	});
+});
+
+
 /*
 // CREATE route
 routes.post("/", middleware.isLoggedIn, (req, res) => {

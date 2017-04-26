@@ -20,6 +20,20 @@ routes.get("/:id",  (req, res) => {
 	});
 });
 
+// CREATE route
+routes.post("/", (req, res) => {
+	console.log(req.body);
+	res.json({ msg : "Created new category " + req.body.name });
+	// Category.create(req.body, (err, createdCategory) => {
+	// 	if (err)
+	// 		req.flash('error', err);
+	// 	else
+	// 		req.flash('success', "Created a new category " + createdCategory.name);
+	// 	res.redirect('/category');
+	// });
+});
+
+
 /*
 // CREATE route
 routes.post("/", middleware.isAdmin, (req, res) => {
