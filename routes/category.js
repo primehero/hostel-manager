@@ -15,72 +15,38 @@ routes.get("/", (req, res) => {
 routes.get("/:id",  (req, res) => {
 	Category.findById(req.params.id, (err, foundCategory) => {
 		if (err)
-			req.flash("error", err);
-		res.render("index");
+			res.json({ error : err });
+		res.json({ category : foundCategory });
 	});
 });
 
 // CREATE route
 routes.post("/", (req, res) => {
-	console.log(req.body);
-	res.json({ msg : "Created new category " + req.body.name });
-	// Category.create(req.body, (err, createdCategory) => {
-	// 	if (err)
-	// 		req.flash('error', err);
-	// 	else
-	// 		req.flash('success', "Created a new category " + createdCategory.name);
-	// 	res.redirect('/category');
-	// });
-});
-
-
-/*
-// CREATE route
-routes.post("/", middleware.isAdmin, (req, res) => {
 	Category.create(req.body, (err, createdCategory) => {
 		if (err)
-			req.flash('error', err);
-		else
-			req.flash('success', "Created a new category " + createdCategory.name);
-		res.redirect('/category');
+			res.json({ error : err });
+		res.json({ msg : "Created a new category '" + createdCategory.name + "'" });
 	});
 });
-
-// EDIT route
-routes.get("/:id/edit", middleware.isAdmin, (req, res) => {
-	Category.findById(req.params.id, (err, foundCategory) => {
-		if (err) {
-			req.flash(err);
-			res.redirect("/category");
-		}
-		res.render("category/edit", { category : foundCategory });
-	});
-});
-
 
 // UPDATE route
-routes.put("/:id", middleware.isAdmin, (req, res) => {
-	Category.findByIdAndUpdate(req.params.id, { $set : req.body }, (err, updatedCategory) => {
-		if (err)
-			req.flash('error', err);
-		else
-			req.flash('success', "Updated Category " + updatedCategory.name);
-		res.redirect("/category");
+routes.put("/:id", (req, res) => {
+	Category.findByIdAndUpdate(req.params.id, { $set : req.body },
+		(err, updatedCategory) => {
+			if (err)
+				res.json({ error : err });
+			res.json({ msg: "Updated Category " + updatedCategory.name });
 	});
 });
-
 
 // DELETE route
-routes.delete("/:id", middleware.isAdmin, (req, res) => {
+routes.delete("/:id", (req, res) => {
 	Category.findByIdAndRemove(req.params.id, (err) => {
 		if (err)
-			req.flash('error', err);
-		else
-			req.flash('success', "Deleted Category Successfully");
-		res.redirect("/category");
+			res.json({ error : err });
+		res.json({ msg : "Deleted Category Successfully" });
 	});
 });
 
 
-*/
 module.exports = routes;

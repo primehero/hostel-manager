@@ -21,7 +21,7 @@
                               <td>Rs. {{r.cost}}</td>
                               <td>{{r.numBeds - r.numOccupied}}</td>
                               <td><a href="#/room/{{r._id}}/edit">Edit</a></td>
-                              <td><a href="#/room/{{r._id}}/delete">Delete</a></td>
+                              <td><a ng-click="delete(r._id)">Delete</a></td>
                               <td><a href="#/room/{{r._id}}">More</a></td>
                           </tr>
                       </tbody>

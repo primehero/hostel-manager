@@ -1,0 +1,22 @@
+<div class="col-md-8">
+  <!-- NEW CATEGORY FORM
+  ==================================================-->
+  <form id="newCategory" ng-submit="submit()">
+    <div class="row">
+      <div class="col-md-4">
+        {{mySubmit}}
+        <div class="form-group">
+          <input id="name" name="name" type="text"
+            placeholder="Name" class="form-control input-md"
+            ng-model="catName">
+        </div><!-- ./form-group -->
+
+      </div><!-- ./col -->
+
+      <div class="form-group">
+       <input type="submit" name="submit" value="submit" class="btn btn-primary">
+      </div><!-- ./form-group -->
+
+    </div><!-- ./row -->
+  </form><!-- ./new category form -->
+</div>

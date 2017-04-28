@@ -22,8 +22,11 @@
         templateUrl: "/app/templates/category/new.html",
         controller: "CatsNewCtrl"
       })
-
-
+      // Edit
+      .when('/category/:id/edit', {
+        templateUrl: "/app/templates/category/edit.html",
+        controller: "CatsEditCtrl"
+      })
 
 
       // HOSTEL
@@ -33,11 +36,22 @@
         templateUrl: "/app/templates/hostel/index.html",
         controller: "HostelCtrl"
       })
+      // New
+      .when("/hostel/new", {
+        templateUrl: "/app/templates/hostel/new.html",
+        controller: "HostelNewCtrl"
+      })
       // Show
       .when("/hostel/:id", {
         templateUrl: "/app/templates/hostel/show.html",
         controller: "HostelShowCtrl"
       })
+      // Edit
+      .when("/hostel/:id/edit", {
+        templateUrl: "/app/templates/hostel/edit.html",
+        controller: "HostelEditCtrl"
+      })
+
 
 
       // ROOM
@@ -47,11 +61,22 @@
         templateUrl: "/app/templates/room/index.html",
         controller: "RoomCtrl"
       })
+      // New
+      .when("/room/new", {
+        templateUrl: "/app/templates/room/new.html",
+        controller: "RoomNewCtrl"
+      })
       // Show
       .when("/room/:id", {
         templateUrl: "/app/templates/room/show.html",
         controller: "RoomShowCtrl"
       })
+      // Edit
+      .when("/room/:id/edit", {
+        templateUrl: "/app/templates/room/edit.html",
+        controller: "RoomEditCtrl"
+      })
+
 
       // TENANT
       // ====
@@ -59,6 +84,11 @@
       .when("/tenant", {
         templateUrl: "/app/templates/tenant/index.html",
         controller: "TenantCtrl"
+      })
+      // New
+      .when("/tenant/new", {
+        templateUrl: "/app/templates/tenant/new.html",
+        controller: "TenantNewCtrl"
       })
       // Show
       .when("/tenant/:id", {

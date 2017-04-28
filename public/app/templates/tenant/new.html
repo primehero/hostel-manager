@@ -1,0 +1,87 @@
+
+  <!-- NEW TENANT
+  ==================================================-->
+  <form ng-submit="submit()">
+    <div class="row">
+      <div class="col-md-6">
+
+        <!-- Hostel Select -->
+        <div class="form-group">
+          <select id="hostelName" ng-model="tenant.hostel"
+            ng-options="h.name for h in hostels" class="form-control">
+          </select>
+        </div><!-- ./form-group -->
+
+
+        <!-- Room Select -->
+        <div class="form-group" ng-show="::tenant.hostel">
+          <select id="roomNum" ng-model="tenant.room"
+            ng-options="r.roomNumber for r in rooms | filter: { r.hostel._id : tenant.hostel._id }"
+            class="form-control">
+          </select>
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+          <input id="name" ng-model="tenant.name" placeholder="Name"
+            class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <input id="adhaar" ng-model="tenant.adhaar" type="text"
+              placeholder="Adhaar Number" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <input id="addess" ng-model="tenant.address" type="text"
+              placeholder="Address" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+             <input id="phone" ng-model="tenant.phone" type="text"
+              placeholder="Phone Number" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+             <input id="startDate" ng-model="tenant.startDate" type="text"
+              placeholder="Start Date" class="form-control datepicker hasDatepicker">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+             <input id="endDate" ng-model="tenant.endDate" type="text"
+              placeholder="End Date" class="form-control datepicker hasDatepicker">
+        </div><!-- ./form-group -->
+
+        <!-- AMENITIES -->
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="Wifi" name="amenities">
+              Wifi
+            </label>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="sojwd" name="amenities">
+              sojwd
+            </label>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="hbnuegfuwe" name="amenities">
+              hbnuegfuwe
+            </label>
+          </div>
+
+        <!-- ./amenities -->
+
+        <div class="form-group">
+           <input type="submit" name="submit" value="submit" class="btn btn-primary">
+        </div><!-- ./form-group -->
+
+      </div><!-- ./col -->
+    </div><!-- ./row -->
+  </form><!-- ./new hostel form -->
+
+</div>

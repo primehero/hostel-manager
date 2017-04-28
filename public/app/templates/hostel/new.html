@@ -1,0 +1,65 @@
+
+
+  <!-- NEW HOSTEL FORM
+  ==================================================-->
+
+  <form ng-submit="submit()">
+    <div class="row">
+      <div class="col-md-4">
+
+        <div class="form-group">
+            <input id="name" ng-model="hostel.name" type="text"
+                placeholder="Name" class="form-control input-md">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+          <select id="category" ng-model="hostel.category"
+            ng-options="c.name for c in cats" class="form-control">
+          </select>
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <textarea id="name" ng-model="hostel.address" placeholder="Address"
+              class="form-control input-md"></textarea>
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <textarea id="about" ng-model="hostel.description" placeholder="About Hostel"
+              class="form-control input-md"></textarea>
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <input id="phoneNumber" ng-model="hostel.phone" type="text"
+                placeholder="PhoneNumber" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <input id="wardenName" ng-model="hostel.warden.name" type="text"
+                placeholder="Warden Name" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <textarea id="Address" ng-model="hostel.warden.address" type="text"
+                placeholder="Warden Address " class="form-control"></textarea>
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+            <input id="PhoneNumber" ng-model="hostel.warden.phone" type="text"
+                placeholder="Warden PhoneNumber" class="form-control">
+        </div><!-- ./form-control -->
+
+        <!-- Select Basic -->
+        <div class="form-group">
+            <select id="ownerNames" ng-model="hostel._creator"
+              ng-options="u.username for u in users" class="form-control">
+            </select>
+        </div><!-- ./form-group -->
+
+
+        <div class="form-group">
+         <input type="submit" value="submit" class="btn btn-primary">
+        </div><!-- ./form-group -->
+
+      </div><!-- ./col -->
+    </div><!-- ./row -->
+  </form><!-- ./new hostel form -->

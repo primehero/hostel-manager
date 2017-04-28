@@ -11,8 +11,8 @@
                       <tbody>
                           <tr ng-repeat="cat in cats">
                               <td>{{cat.name}}</td>
-                              <td><a href="#/category/{{cat.name}}/edit">Edit</a></td>
-                              <td><a href="#/category/{{cat.name}}/delete">Delete</a></td>
+                              <td><a href="#/category/{{cat._id}}/edit">Edit</a></td>
+                              <td><a ng-click="delete(cat._id)">Delete</a></td>
                           </tr>
                       </tbody>
                   </table><!-- ./table -->

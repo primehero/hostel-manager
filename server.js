@@ -30,6 +30,11 @@ app.use("/tenant",    tenantRoutes);
 app.use("/user",      userRoutes);
 
 
+// Change this to home page.
+app.get("/", (req, res) => {
+  res.redirect("/app");
+});
+
 /**
  * ANGULAR APPLICATION route
  */

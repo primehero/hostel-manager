@@ -1,3 +1,4 @@
+
 button.invisible-bg {
 	background-color: rgba(255, 255, 255, 0);
 	border: none;
@@ -25,4 +26,13 @@ li.list-group-item {
 	    text-align:inherit;
 	    border-top: 0;
 			list-style-type: none;
+}
+
+/**
+ * OVERRIDE BS
+ * ==========
+ */
+
+a {
+	cursor: pointer;
 }

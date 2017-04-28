@@ -1,0 +1,43 @@
+
+  <!-- NEW ROOM FORM
+  ==================================================-->
+
+  <form ng-submit="submit()">
+    <div class="row">
+      <div class="col-md-6">
+
+        <!-- Select Basic -->
+        <div class="form-group">
+          <select id="hostelName" ng-model="room.hostel"
+            ng-options="h.name for h in hostels" class="form-control">
+          </select>
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+          <input id="floor" ng-model="room.floor"
+            placeholder="Floor Name" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+          <input id="roomNumber" ng-model="room.roomNumber"
+              type="text" placeholder="Room Number" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+          <input id="numBeds" ng-model="room.numBeds" type="text"
+              placeholder="Number of beds" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+           <input id="cost" ng-model="room.cost" type="text"
+              placeholder="Cost Per Person" class="form-control">
+        </div><!-- ./form-group -->
+
+        <div class="form-group">
+          <input type="submit" value="submit"
+            class="btn btn-primary">
+        </div><!-- ./form-group -->
+
+      </div><!-- ./col -->
+    </div><!-- ./row -->
+  </form>

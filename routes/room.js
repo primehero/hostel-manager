@@ -3,8 +3,9 @@
  * ====
  */
 
-var routes 			= require("express").Router();
-var Room 				= require("../models/room");
+var routes 				= require("express").Router();
+var Room 					= require("../models/room");
+var Hostel 				= require("../models/hostel");
 
 // INDEX route
 routes.get("/", (req, res) => {
@@ -13,11 +14,6 @@ routes.get("/", (req, res) => {
 			res.json({error : err});
 		res.json({rooms : foundRooms});
 	});
-});
-
-// NEW route
-routes.get("/new", (req, res) => {
-	res.render("room/new", { hostelId : req.query.hostel });
 });
 
 // SHOW route
@@ -31,86 +27,50 @@ routes.get("/:id", (req, res) => {
 	});
 });
 
-
-/*
 // CREATE route
-routes.post("/", middleware.isLoggedIn, (req, res) => {
+routes.post("/", (req, res) => {
 	Room.create(req.body, (err, createdRoom) => {
-		if (err) {
-			req.flash("error", err);
-			res.redirect("/hostel");
-		} else {
+		if (err)
+			res.json({ error : err });
+		else {
 			Hostel.findById(createdRoom.hostel, (err, foundHostel) => {
-				if (err) {
-					req.flash("error", err);
-					res.redirect("/hostel");
-				} else {
-					console.log(createdRoom);
+				if (err)
+					res.json({ error : err });
+				else {
 					createdRoom._creator = foundHostel._creator;
 					createdRoom.save(err => {
-						if (err) {
-							req.flash("error", err);
-							res.redirect("/hostel");
-						}
-						else {
-							req.flash(
-								"success",
-								"Created a new room, room number " + createdRoom.roomNumber);
-							res.redirect("/room?hostel=" + createdRoom.hostel);
-						}
-					});
-				}
-			});
-		}
-	});
-});
+						if (err)
+							res.json({ error : err });
+						else
+							res.json({ msg : "Created a new room, room number " + createdRoom.roomNumber });
+					}); 		// ./save
+				}					// ./else
+			});					// ./findById
+		}							// ./else
+	});							// ./create
+});								// ./post
 
-
-// SHOW route
-routes.get("/:id", middleware.isLoggedIn, (req, res) => {
-	Room.findById(req.params.id).populate('hostel').exec((err, foundRoom) => {
-		if (err) {
-			req.flash("error", err);
-			res.redirect("/hostel")
-		}
-		res.render('room/show', { room : foundRoom });
-	});
-});
-
-// EDIT route
-routes.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
-	Room.findById(req.params.id).exec((err, foundRoom) => {
-		if (err) {
-			req.flash("error", err);
-			res.redirect("/hostel")
-		}
-		res.render('room/edit', { room : foundRoom });
-	});
-});
 
 // UPDATE route
-routes.put("/:id", middleware.isLoggedIn, (req, res) => {
+routes.put("/:id", (req, res) => {
 	Room.findByIdAndUpdate(req.params.id,
 			{ $set : req.body },
 			(err, updatedRoom) => {
 		if (err)
-			req.flash("error", err);
-		else
-			req.flash("success", "Updated Room " + updatedRoom.roomNumber + " Successfully!");
-		res.redirect("/room/" + req.params.id);
+			res.json({ error : err });
+		res.json({ msg : "Updated Room " + updatedRoom.roomNumber +
+		 	" Successfully!" });
 	});
 });
 
 // DELETE route
-routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
+routes.delete("/:id", (req, res) => {
 	Room.findByIdAndRemove(req.params.id, (err) => {
 		if (err)
-			req.flash('error', err);
-		else
-			req.flash('success', "Deleted Room Successfully");
-		res.redirect("/hostel");
+			res.json({ error : err });
+		res.json({ msg : "Deleted Room Successfully" });
 	});
 });
 
-*/
+
 module.exports = routes;

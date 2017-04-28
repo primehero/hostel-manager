@@ -17,7 +17,7 @@
                               <td>{{h.address}}</td>
                               <td>{{h.phone}}</td>
                               <td><a href="#/hostel/{{h._id}}/edit">Edit</a></td>
-                              <td><a href="#/hostel/{{h._id}}/delete">Delete</a></td>
+                              <td><a ng-click="delete(h._id)">Delete</a></td>
                               <td><a href="#/hostel/{{h._id}}">More</a></td>
                           </tr>
                       </tbody>
