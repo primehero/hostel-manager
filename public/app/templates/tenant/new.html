@@ -16,7 +16,8 @@
         <!-- Room Select -->
         <div class="form-group" ng-show="::tenant.hostel">
           <select id="roomNum" ng-model="tenant.room"
-            ng-options="r.roomNumber for r in rooms | filter: { r.hostel._id : tenant.hostel._id }"
+            ng-options="r.roomNumber for r in rooms |
+             filter: { hostel._id : tenant.hostel._id }" 
             class="form-control">
           </select>
         </div><!-- ./form-group -->

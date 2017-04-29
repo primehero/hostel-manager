@@ -16,33 +16,19 @@ routes.post('/', function(req, res) {
   var newUser = new User({ username : req.body.username });
   User.register(newUser, req.body.password, function(err, user) {
     if (err)
-      req.flash('error', JSON.stringify(err));
-    else
-      req.flash('success', "Created new User: " + user.username);
-    res.redirect('/user');
-  });
-});
-/*
-// SHOW route
-routes.get("/:id", middleware.isAdmin, function(req, res) {
-  User.findById(req.params.id, (err, foundUser) => {
-    if (err) {
-      req.flash('error', err);
-      res.redirect('/user');
-    }
-    res.render("user/show", { user : foundUser });
+      res.json({ error : err });
+    res.json({ msg : "Created new User: " + user.username });
   });
 });
 
 // DELETE route
-routes.delete('/:id', middleware.isAdmin, function(req, res) {
+routes.delete('/:id', function(req, res) {
   User.findByIdAndRemove(req.params.id, err => {
     if (err)
-      req.flash('error', err);
-    else
-      req.flash('success', "Removed User!");
-    res.redirect('/user');
+      res.json({ error : err });
+    res.json({ msg : "Removed User!" });
   });
 });
-*/
+
+
 module.exports = routes;

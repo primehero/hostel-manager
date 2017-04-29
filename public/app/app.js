@@ -96,14 +96,14 @@
         controller: "TenantShowCtrl"
       })
 
-      // payment
+      // PAYMENT
       // ====
-      // Index
+      // INDEX
       .when("/payment", {
         templateUrl: "/app/templates/payment/index.html",
         controller: "PayCtrl"
       })
-      // Show
+      // SHOW
       .when("/payment/:id", {
         templateUrl: "/app/templates/payment/show.html",
         controller: "PayShowCtrl"
@@ -112,10 +112,17 @@
 
 
 
-
+      // USER
+      // ====
+      // INDEX
       .when("/user", {
         templateUrl: "/app/templates/user/index.html",
         controller: "UserCtrl"
+      })
+      // SHOW
+      .when("/user/new", {
+        templateUrl: "/app/templates/user/new.html",
+        controller: "UserNewCtrl"
       })
   }]);
 

@@ -5,7 +5,6 @@
                 <tr>
                     <th>Username</th>
                     <th>Admin Priviliges</th>
-                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -14,12 +13,7 @@
                     <td>{{u.username}}</td>
                     <td>{{u.admin}}</td>
                     <td>
-                      <a ng-hide="u.admin" href="#/tenant/{{cat.name}}/edit">
-                        Edit
-                      </a>
-                    </td>
-                    <td>
-                      <a ng-hide="u.admin" href="#/tenant/{{cat.name}}/delete">
+                      <a ng-hide="u.admin" ng-click="delete(u._id)">
                         Delete
                       </a>
                     </td>

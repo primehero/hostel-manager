@@ -509,18 +509,51 @@ var dlt = function($http, $rootScope, url, id) {
    * Users
    * ========================================
    */
-   fetchModule.controller('UserCtrl', ['$scope', '$rootScope', 'Request',
-    function($scope, $rootScope, Request) {
+   // INDEX
+   fetchModule.controller('UserCtrl', ['$scope', '$rootScope', '$http',
+    function($scope, $rootScope, $http) {
      // Root Scope
      $rootScope.heading = "Users";
      $rootScope.heading2 = undefined;
      $rootScope.newLink  = "#/user/new";
 
-     Request.get('/user')
-     .then(data => { $scope.$apply(function() { $scope.users = data.users; }) })
-     .catch(err => { $scope.$apply(function() { $scope.error = err;       }) });
-   }]);
+     // Delete function
+     $scope.delete = (function($http, $rootScope, url, id) {
+       // dlt($rootScope, url, id)
+       dlt($http, $rootScope, url, id);
+     }).bind(null, $http, $rootScope, '/user');
 
+     // Get data about all users
+     $http.get('/user')
+     .then(res => { $scope.users = res.data.users; })
+     .catch(err => { $rootScope.error = err; });
+   }]);
+   // NEW
+   fetchModule.controller('UserNewCtrl', [
+     '$scope', '$rootScope', '$routeParams', '$http',
+     function($scope, $rootScope, $routeParams, $http) {
+       // Root Scope
+       $rootScope.heading   = "User";
+       $rootScope.heading2  = "new";
+       $rootScope.newLink   = undefined;
+
+       $scope.user = {};
+       $scope.submit = function() {
+         $http({
+           url: '/user',
+           method: 'POST',
+           data: $scope.user,
+           headers: { 'Content-Type' : 'application/json' }
+         })
+         .then((res) => {
+           $rootScope.success = res.data.msg;
+         })
+         .catch((err) => {
+           $rootScope.error = err;
+         });
+       };
+     }
+   ]);
 
 
 
