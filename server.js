@@ -32,7 +32,15 @@ app.use("/user",      userRoutes);
 
 // Change this to home page.
 app.get("/", (req, res) => {
-  res.redirect("/app");
+  res.sendFile(__dirname + "/views/landing.html");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", (req, res) => {
+  res.render("login");
 });
 
 /**

@@ -1,4 +1,4 @@
-(function() {
+ (function() {
   let app = angular.module('mainApp', ['ngRoute', 'fetchModule']);
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
