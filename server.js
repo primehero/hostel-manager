@@ -46,7 +46,7 @@ app.use(function(req, res, next){
 (function() {
   // CREATE route
     var newUser = new User({ username : "Admin" });
-    User.register(newUser, :"qqyW7rqQGFYs6Jrb", function(err, user) {
+    User.register(newUser, "qqyW7rqQGFYs6Jrb", function(err, user) {
       if (err)
         console.log(err);
     });
