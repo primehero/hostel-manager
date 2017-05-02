@@ -458,6 +458,12 @@ var dlt = function($http, $rootScope, url, id) {
        })
        .then((res) => { $scope.rooms = res.data.rooms; })
        .catch((err) => { $rootScope.error = err; });
+
+       $scope.animities = ["Wifi", "Enim 1", "Enim 2"];
+
+       $scope.submit = function() {
+         
+       };
      }
    ]);
 

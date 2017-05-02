@@ -22,7 +22,6 @@ routes.get("/", (req, res) => {
 				res.json({ tenants : foundTenants });
 			});
 		});
-
 });
 
 // SHOW route
@@ -45,6 +44,7 @@ routes.get("/:id", (req, res) => {
 
 
 // CREATE route
+
 
 /*
 // SHOW route

@@ -17,7 +17,7 @@
         <div class="form-group" ng-show="::tenant.hostel">
           <select id="roomNum" ng-model="tenant.room"
             ng-options="r.roomNumber for r in rooms |
-             filter: tenant.hostel._id" 
+             filter: tenant.hostel._id"
             class="form-control">
           </select>
         </div><!-- ./form-group -->
@@ -53,27 +53,12 @@
         </div><!-- ./form-group -->
 
         <!-- AMENITIES -->
-
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="Wifi" name="amenities">
-              Wifi
-            </label>
-          </div>
-
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="sojwd" name="amenities">
-              sojwd
-            </label>
-          </div>
-
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="hbnuegfuwe" name="amenities">
-              hbnuegfuwe
-            </label>
-          </div>
+        <div class="checkbox" ng-repeat="a in animities">
+          <label>
+            <input type="checkbox" ng-value="a" name="amenities">
+            {{a}}
+          </label>
+        </div>
 
         <!-- ./amenities -->
 
