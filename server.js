@@ -1,7 +1,14 @@
-var express     = require('express');
-var app         = express();
-var mongoose    = require("mongoose");
-var bodyParser  = require("body-parser");
+var express         = require('express'),
+    app             = express(),
+    mongoose        = require("mongoose"),
+    bodyParser      = require("body-parser"),
+    passport        = require("passport"),
+    cookieParser    = require("cookie-parser"),
+    LocalStrategy   = require("passport-local"),
+    flash           = require("connect-flash"),
+    User            = require("./models/user"),
+    middleware      = require("./krypton/middleware");
+
 
 var DB    = process.env.DB    || "mongodb://localhost/hostel_app_test";
 var IP    = process.env.IP    || "0.0.0.0";
@@ -12,6 +19,28 @@ app.use(bodyParser.json());
 mongoose.connect(DB);
 app.use(express.static(
   __dirname + "/public") );
+
+// AUTH
+// ====
+app.use(cookieParser('secret'));
+app.use(require("express-session")({
+    secret: "Once again Rusty wins cutest dog!",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(function(req, res, next){
+   res.locals.currentUser = req.user;
+   res.locals.success = req.flash('success');
+   res.locals.error = req.flash('error');
+   next();
+});
+
 
 // ROUTES
 // ====
@@ -35,18 +64,24 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/landing.html");
 });
 
+// Login route
 app.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login.ejs");
 });
 
-app.post("/login", (req, res) => {
-  res.render("login");
-});
+// Login
+app.post("/login", passport.authenticate("local",
+    {
+      successRedirect: "/app",
+      failureRedirect: "/login",
+      failureFlash: true
+    }), function(req, res){
+})
 
 /**
  * ANGULAR APPLICATION route
  */
-app.get("/app", (req, res) => {
+app.get("/app", middleware.isLoggedIn, (req, res) => {
   res.sendFile( __dirname + "/views/index.html" );
 });
 

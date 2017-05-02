@@ -1,10 +1,12 @@
 var routes = require("express").Router();
 var Payment = require("../models/payment");
 var Tenant = require("../models/tenant");
+var middleware = require("../krypton/middleware");
+
 
 
 // INDEX route
-routes.get("/", (req, res) => {
+routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Payment.find({})
 		.populate('tenant')
 		.exec((err, foundPayments) => {
@@ -15,7 +17,7 @@ routes.get("/", (req, res) => {
 });
 
 // CREATE route
-routes.post("/", (req, res) => {
+routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Payment.create(req.body, (err, createdPayment) => {
 		if (err)
 			req.flash("error", err);
@@ -26,7 +28,7 @@ routes.post("/", (req, res) => {
 });
 
 // SHOW route
-routes.get("/:id", (req, res) => {
+routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 	Payment.findById(req.params.id)
 	 	.populate('tenant')
 		.exec((err, foundPayment) => {

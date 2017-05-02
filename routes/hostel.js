@@ -5,10 +5,12 @@
 
 var routes 			= require("express").Router();
 var Hostel 			= require("../models/hostel");
+var middleware = require("../krypton/middleware");
+
 
 
 // INDEX route
-routes.get("/", (req, res) => {
+routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Hostel.find({}, (err, foundHostels) => {
 		if (err)
 			res.json({ error : err });
@@ -17,7 +19,7 @@ routes.get("/", (req, res) => {
 });
 
 // SHOW route
-routes.get('/:id', (req, res) => {
+routes.get('/:id', middleware.isLoggedIn, (req, res) => {
 	Hostel.findById(req.params.id)
 		.populate('category')
 		.populate('_creator._id')
@@ -29,7 +31,7 @@ routes.get('/:id', (req, res) => {
 });
 
 // CREATE
-routes.post("/", (req, res) => {
+routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Hostel.create(req.body, (err, createdHostel) => {
 		if (err)
 			res.json({ error : err });
@@ -38,7 +40,7 @@ routes.post("/", (req, res) => {
 });
 
 // UPDATE route
-routes.put("/:id", (req, res) => {
+routes.put("/:id", middleware.isLoggedIn, (req, res) => {
 		Hostel.findByIdAndUpdate(req.params.id,
 			{ $set : req.body },
 			(err, updatedHostel) => {
@@ -49,7 +51,7 @@ routes.put("/:id", (req, res) => {
 });
 
 // DELETE route
-routes.delete("/:id", (req, res) => {
+routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
 	Hostel.findByIdAndRemove(req.params.id, (err) => {
 		if (err)
 			res.json({ error : err });

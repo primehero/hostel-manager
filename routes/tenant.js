@@ -3,11 +3,13 @@ var Tenant 		= require('../models/tenant');
 var Room 			= require('../models/room');
 var Hostel 		= require('../models/room');
 var waterfall	=	require('async-waterfall');
+var middleware = require("../krypton/middleware");
+
 
 
 
 // INDEX route
-routes.get("/", (req, res) => {
+routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Tenant.find({})
 		.lean()
 		.populate('room')
@@ -25,7 +27,7 @@ routes.get("/", (req, res) => {
 });
 
 // SHOW route
-routes.get("/:id", (req, res) => {
+routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 	Tenant.findById(req.params.id)
 	.populate('room')
 	.exec((err, foundTenant) => {

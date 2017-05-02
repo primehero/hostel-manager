@@ -462,7 +462,7 @@ var dlt = function($http, $rootScope, url, id) {
        $scope.animities = ["Wifi", "Enim 1", "Enim 2"];
 
        $scope.submit = function() {
-         
+         console.log($scope.tenant);
        };
      }
    ]);

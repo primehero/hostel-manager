@@ -1,5 +1,5 @@
  (function() {
-  let app = angular.module('mainApp', ['ngRoute', 'fetchModule']);
+  let app = angular.module('mainApp', [ '720kb.datepicker', 'ngRoute', 'fetchModule']);
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
 

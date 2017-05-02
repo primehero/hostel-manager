@@ -42,10 +42,14 @@
               placeholder="Phone Number" class="form-control">
         </div><!-- ./form-group -->
 
-        <div class="form-group">
+        <!-- <div class="form-group">
              <input id="startDate" ng-model="tenant.startDate" type="text"
               placeholder="Start Date" class="form-control datepicker hasDatepicker">
-        </div><!-- ./form-group -->
+        </div> --><!-- ./form-group -->
+
+        <datepicker>
+          <input ng-model="date" type="text"/>
+        </datepicker>
 
         <div class="form-group">
              <input id="endDate" ng-model="tenant.endDate" type="text"
@@ -55,7 +59,7 @@
         <!-- AMENITIES -->
         <div class="checkbox" ng-repeat="a in animities">
           <label>
-            <input type="checkbox" ng-value="a" name="amenities">
+            <input type="checkbox" ng-value="a" name="tenant.amenities">
             {{a}}
           </label>
         </div>

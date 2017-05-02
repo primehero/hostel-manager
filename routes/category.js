@@ -1,9 +1,11 @@
 var routes = require("express").Router();
 var Category = require("../models/category");
+var middleware = require("../krypton/middleware");
+
 
 
 // INDEX route
-routes.get("/", (req, res) => {
+routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Category.find({}, (err, foundCategories) => {
 		if (err)
 			res.json({ error : err });
@@ -12,7 +14,7 @@ routes.get("/", (req, res) => {
 });
 
 // SHOW route
-routes.get("/:id",  (req, res) => {
+routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 	Category.findById(req.params.id, (err, foundCategory) => {
 		if (err)
 			res.json({ error : err });
@@ -21,7 +23,7 @@ routes.get("/:id",  (req, res) => {
 });
 
 // CREATE route
-routes.post("/", (req, res) => {
+routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Category.create(req.body, (err, createdCategory) => {
 		if (err)
 			res.json({ error : err });
@@ -30,7 +32,7 @@ routes.post("/", (req, res) => {
 });
 
 // UPDATE route
-routes.put("/:id", (req, res) => {
+routes.put("/:id", middleware.isLoggedIn, (req, res) => {
 	Category.findByIdAndUpdate(req.params.id, { $set : req.body },
 		(err, updatedCategory) => {
 			if (err)
@@ -40,7 +42,7 @@ routes.put("/:id", (req, res) => {
 });
 
 // DELETE route
-routes.delete("/:id", (req, res) => {
+routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
 	Category.findByIdAndRemove(req.params.id, (err) => {
 		if (err)
 			res.json({ error : err });
