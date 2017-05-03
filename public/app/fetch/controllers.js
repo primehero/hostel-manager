@@ -1,6 +1,7 @@
 
-/****/
-// Sending delete request to the server.
+/**
+ * Sending delete request to the server.
+ */
 var dlt = function($http, $rootScope, url, id) {
   $http({
     url: url + '/' + id,
@@ -415,23 +416,36 @@ var dlt = function($http, $rootScope, url, id) {
    * ========================================
    */
    // Index
-   fetchModule.controller('TenantCtrl', ['$scope', '$rootScope', 'Request',
-    function($scope, $rootScope, Request) {
+   fetchModule.controller('TenantCtrl', ['$scope', '$rootScope', '$http',
+    function($scope, $rootScope, $http) {
       // Root Scope
       $rootScope.heading = "Tenants";
       $rootScope.heading2 = undefined;
       $rootScope.newLink  = "#/tenant/new";
 
-     Request.get('/tenant')
-     .then(data => { $scope.$apply(function() { $scope.tenants = data.tenants; }) })
-     .catch(err => { $scope.$apply(function() { $scope.error = err;            }) });
-   }]);
-   // Show
-   fetchModule.controller('TenantShowCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+      // Delete function
+      $scope.delete = (function($http, $rootScope, url, id) {
+        // dlt($rootScope, url, id)
+        dlt($http, $rootScope, url, id);
+      }).bind(null, $http, $rootScope, '/tenant');
+
+      $http.get('/tenant')
+      .then(res => { $scope.tenants = res.data.tenants; })
+      .catch(err => { $scope.error = err; });
+  }]);
+  // Show
+  fetchModule.controller('TenantShowCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
     function($scope, $rootScope, $routeParams, $http) {
       // Root Scope
       $rootScope.heading = "Tenant";
       $rootScope.newLink = undefined;
+
+      // Delete function
+      $scope.delete = (function($http, $rootScope, url, id) {
+        // dlt($rootScope, url, id)
+        dlt($http, $rootScope, url, id);
+      }).bind(null, $http, $rootScope, '/tenant');
+
 
       $http.get('/tenant/' + $routeParams.id)
       .then(res => {
@@ -439,9 +453,9 @@ var dlt = function($http, $rootScope, url, id) {
         $scope.tenant = res.data.tenant;
       })
       .catch(err => { $scope.error  = err; });
-   }]);
+  }]);
    // New
-   fetchModule.controller('TenantNewCtrl', [
+  fetchModule.controller('TenantNewCtrl', [
      '$scope', '$rootScope', '$routeParams', '$http',
      function($scope, $rootScope, $routeParams, $http) {
        // Root Scope
@@ -459,13 +473,88 @@ var dlt = function($http, $rootScope, url, id) {
        .then((res) => { $scope.rooms = res.data.rooms; })
        .catch((err) => { $rootScope.error = err; });
 
-       $scope.animities = ["Wifi", "Enim 1", "Enim 2"];
+      // $scope.amenities = ["Wifi", "Enim 1", "Enim 2"];
+      $scope.amenities = [
+        { name: "Wifi"  , id: 0 },
+        { name: "Enim 1", id: 1 },
+        { name: "Enim 2", id: 2 }
+      ];
+       
+      $scope.facilities = [];            
+      $scope.date = null;
 
-       $scope.submit = function() {
-         console.log($scope.tenant);
-       };
+      // Send Data to the Server.
+      $scope.submit = function() {        
+        $scope.tenant.amenities = $scope.amenities.filter((am, indx) => {
+          if ($scope.facilities[indx])
+            return true;
+          return false;
+        });
+        $scope.tenant.amenities = $scope.tenant.amenities.map((am) => {
+          return am.name;
+        });
+
+        $http({
+          url: '/tenant',
+          method: "POST",
+          data: $scope.tenant,
+          headers: { 'Content-Type' : 'application/json' }
+        })
+        .then((res) => {
+          $rootScope.success = res.data.msg;
+          $rootScope.error = undefined;
+        })
+        .catch((err) => {
+          $rootScope.success = undefined;
+          $rootScope.error = err;
+        });
+      };
      }
-   ]);
+  ]);
+  // EDIT  
+  fetchModule.controller('TenantEditCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+    function($scope, $rootScope, $routeParams, $http) {
+      // Root Scope
+      $rootScope.heading = "Tenant";
+      $rootScope.newLink = undefined;
+
+      // Getting tenant details
+      $http.get('/tenant/' + $routeParams.id)
+      .then(res => {
+        $rootScope.heading2 = res.data.tenant.name;
+        $scope.tenant = res.data.tenant;
+      })
+      .catch((err) => { $rootScope.error = err; }); 
+
+      // $scope.amenities = ["Wifi", "Enim 1", "Enim 2"];
+      $scope.amenities = [
+        { name: "Wifi"  , id: 0 },
+        { name: "Enim 1", id: 1 },
+        { name: "Enim 2", id: 2 }
+      ];
+       
+      $scope.facilities = [];            
+      $scope.date = null;
+
+      $scope.submit = function() {        
+        $http({
+          url: '/tenant/' + $routeParams.id,
+          method: "PUT",
+          data: $scope.tenant,
+          headers: { 'Content-Type' : 'application/json' }
+        })
+        .then((res) => {
+          $rootScope.success = res.data.msg;
+          $rootScope.error = undefined;
+        })
+        .catch((err) => {
+          $rootScope.success = undefined;
+          $rootScope.error = err;
+        });
+    };
+  }]);
+
+
 
 
 
@@ -478,33 +567,89 @@ var dlt = function($http, $rootScope, url, id) {
    * Payment
    * ========================================
    */
-   // Index
-   fetchModule.controller('PayCtrl', ['$scope', '$rootScope', 'Request',
-    function($scope, $rootScope, Request) {
-      // Root Scope
-      $rootScope.heading = "Payments";
-      $rootScope.heading2 = undefined;
-      $rootScope.newLink  = "#/payment/new";
+    // Index
+    fetchModule.controller('PayCtrl', ['$scope', '$rootScope', '$http',
+      function($scope, $rootScope, $http) {
+        // Root Scope
+        $rootScope.heading = "Payments";
+        $rootScope.heading2 = undefined;
+        $rootScope.newLink  = "#/payment/new";
 
-      Request.get('/payment')
-      .then(data => { $scope.$apply(function() { $scope.payments = data.payments; }) })
-      .catch(err => { $scope.$apply(function() { $scope.error = err;            }) });
-   }]);
-   // Show
-   fetchModule.controller('PayShowCtrl', ['$scope', '$rootScope', '$routeParams', 'Request',
-    function($scope, $rootScope, $routeParams, Request) {
-      // Root Scope
-      $rootScope.heading = "Payment";
-      $rootScope.heading2 = data.payment.tenant.name;
-      $rootScope.newLink  = undefined;
+        $http.get('/payment')
+        .then(res => { $rootScope.payments = res.data.payments; })
+        .catch(err => { $rootScope.error = err; });
 
-      Request.get('/payment/' + $routeParams.id)
-      .then(data => { $scope.$apply(function() {
-        $scope.payment = data.payment;
-      }) })
-      .catch(err => { $scope.$apply(function() { $scope.error  = err; }) });
-   }]);
+        // Delete function
+        $scope.delete = (function($http, $rootScope, url, id) {
+          // dlt($rootScope, url, id)
+          dlt($http, $rootScope, url, id);
+        }).bind(null, $http, $rootScope, '/payment');
 
+    }]);
+    // Show
+    fetchModule.controller('PayShowCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+      function($scope, $rootScope, $routeParams, $http) {
+        // Root Scope
+        $rootScope.heading = "Payment";        
+        $rootScope.newLink  = undefined;
+
+        // Delete function
+        $scope.delete = (function($http, $rootScope, url, id) {
+          // dlt($rootScope, url, id)
+          dlt($http, $rootScope, url, id);
+        }).bind(null, $http, $rootScope, '/payment');
+
+
+        $http.get('/payment/' + $routeParams.id)
+        .then(res => {      
+          try{    
+            $rootScope.heading2 = res.data.payment.tenant.name;
+          } catch (err) {            
+            $rootScope.payment = res.data.payment;
+            console.warn(err);
+          }
+        })
+        .catch(err => { $rootScope.error  = err; });
+    }]);
+    // NEW
+    fetchModule.controller('PayNewCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+      function($scope, $rootScope, $routeParams, $http) {
+        // Root Scope
+        $rootScope.heading = "Payments";
+        $rootScope.newLink  = undefined;
+
+        $http.get('/tenant')
+        .then((res) => { 
+          $scope.tenants = res.data.tenants;
+          $scope.payment = {};
+          $scope.payment.tenant = res.data.tenants[0];
+        })
+        .catch((err) => {});
+
+        $scope.submit = function() {
+          $http({
+            url: '/payment',
+            method: "POST",
+            data: $scope.payment,
+            headers: { 'Content-Type' : 'application/json' }
+          })
+          .then((res) => {
+            $rootScope.success = res.data.msg;
+            $rootScope.error = undefined;
+          })
+          .catch((err) => {
+            $rootScope.success = undefined;
+            $rootScope.error = err;
+          });
+        };
+
+      }
+    ]);
+    // EDIT
+    fetchModule.controller('PayNewCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
+      function($scope, $rootScope, $routeParams, $http) {
+        
+    }]);
 
 
 

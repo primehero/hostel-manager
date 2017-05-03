@@ -16,8 +16,8 @@
           <table class="table info-table">
             <tbody>
              <tr>
-                <td><b>Tenant Name</b>:</td>
-                <td>{{payment.tenant.name}}</td>
+                <td><b>Payment Title</b>:</td>
+                <td>{{payment.title}}</td>
              </tr>
              <tr>
                 <td><b>Tenant Phone</b>:</td>
@@ -53,13 +53,12 @@
     </div><!-- ./row -->
 
     <!-- EDIT -->
-    <a href="#/hostel/58ef57e67a310d0011d7ab5f/edit"
+    <a href="#/payment/{{payment._id}}/edit"
       class="btn btn-warning btn-xs">
         Edit
     </a>
     <!-- DELETE -->
-    <a href="#/hostel/58ef57e67a310d0011d7ab5f/delete"
-      class="btn btn-danger btn-xs">
+    <a ng-click="delete(p._id)" class="btn btn-danger btn-xs">
         Delete
     </a>
 

@@ -3,7 +3,7 @@
   ==================================================-->
   <form ng-submit="submit()">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 container-custom">
 
         <!-- Hostel Select -->
         <div class="form-group">
@@ -11,7 +11,6 @@
             ng-options="h.name for h in hostels" class="form-control">
           </select>
         </div><!-- ./form-group -->
-
 
         <!-- Room Select -->
         <div class="form-group" ng-show="::tenant.hostel">
@@ -22,53 +21,62 @@
           </select>
         </div><!-- ./form-group -->
 
+        <!-- Tenant Name -->
         <div class="form-group">
           <input id="name" ng-model="tenant.name" placeholder="Name"
             class="form-control">
         </div><!-- ./form-group -->
 
+        <!-- Adhaar Number -->
         <div class="form-group">
             <input id="adhaar" ng-model="tenant.adhaar" type="text"
               placeholder="Adhaar Number" class="form-control">
         </div><!-- ./form-group -->
 
+        <!-- Address -->
         <div class="form-group">
             <input id="addess" ng-model="tenant.address" type="text"
               placeholder="Address" class="form-control">
         </div><!-- ./form-group -->
 
+        <!-- Phone number -->
         <div class="form-group">
              <input id="phone" ng-model="tenant.phone" type="text"
               placeholder="Phone Number" class="form-control">
         </div><!-- ./form-group -->
 
-        <!-- <div class="form-group">
-             <input id="startDate" ng-model="tenant.startDate" type="text"
-              placeholder="Start Date" class="form-control datepicker hasDatepicker">
-        </div> --><!-- ./form-group -->
-
-        <datepicker>
-          <input ng-model="date" type="text"/>
-        </datepicker>
-
-        <div class="form-group">
-             <input id="endDate" ng-model="tenant.endDate" type="text"
-              placeholder="End Date" class="form-control datepicker hasDatepicker">
-        </div><!-- ./form-group -->
-
-        <!-- AMENITIES -->
-        <div class="checkbox" ng-repeat="a in animities">
-          <label>
-            <input type="checkbox" ng-value="a" name="tenant.amenities">
-            {{a}}
-          </label>
+        <!-- Start Date -->
+        <div class="form-group date-custom">
+          <datepicker date-format="dd/MM/yyyy">
+            <input ng-model="tenant.startDate" type="text" 
+              class="form-control" placeholder="Start Date" />
+          </datepicker>
         </div>
 
+        <!-- End Date -->
+        <div class="form-group date-custom">
+          <datepicker date-format="dd/MM/yyyy">
+            <input ng-model="tenant.endDate" type="text" 
+              class="form-control" placeholder="End Date"/>
+          </datepicker>
+        </div>
+
+        <br>
+        <br>
+        <!-- AMENITIES -->
+        <div class="checkbox" ng-repeat="ameni in amenities">
+          <label>
+            <input type="checkbox" ng-model="facilities[ameni.id]">
+            {{ameni.name}}
+          </label>
+        </div>        
         <!-- ./amenities -->
+
 
         <div class="form-group">
            <input type="submit" name="submit" value="submit" class="btn btn-primary">
         </div><!-- ./form-group -->
+
 
       </div><!-- ./col -->
     </div><!-- ./row -->

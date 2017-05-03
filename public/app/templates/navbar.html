@@ -43,6 +43,13 @@
             </li>
             <li ng-click="nav.setOption(1)"
               ng-class="(nav.getOption() == 1) ? 'active' : ''">
+                <a href="#/user">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>
+                  User Administration
+                </a>
+            </li>
+            <li ng-click="nav.setOption(2)"
+              ng-class="(nav.getOption() == 2) ? 'active' : ''">
                 <a href="javascript:;" data-toggle="collapse" data-target="#demo">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   Show
@@ -50,7 +57,7 @@
                 </a>
                 <ul id="demo" class="collapse">
                     <li>
-                        <a href="#/category">Categories</a>
+                        <a href="#/category">Hostel Types</a>
                     </li>
                     <li>
                         <a href="#/hostel">Hostels</a>

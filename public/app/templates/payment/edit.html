@@ -1,0 +1,50 @@
+
+  <!-- NEW PAYMENT
+  ==================================================-->
+  <form ng-submit="submit()">
+    <div class="row">
+      <div class="col-md-6 container-custom">
+
+        <!-- Tenant Select -->
+        <div class="form-group">
+          <select id="userName" ng-model="payment.tenant"
+            ng-options="t.name for t in tenants" class="form-control">
+          </select>
+        </div><!-- ./form-group -->
+
+        <!-- Payment Title -->
+        <div class="form-group">
+          <input id="title" ng-model="payment.title" placeholder="Payment Title"
+            class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Amount -->
+        <div class="form-group">
+            <input id="amount" ng-model="payment.amount" type="text"
+              placeholder="Amount" class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Description -->
+        <div class="form-group">
+            <input id="addess" ng-model="payment.desc" type="text"
+              placeholder="Description" class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Start Date -->
+        <div class="form-group date-custom">
+          <datepicker date-format="dd/MM/yyyy">
+            <input ng-model="tenant.nextDate" type="text" 
+              class="form-control" placeholder="Next Payment Date" />
+          </datepicker>
+        </div>
+
+        <div class="form-group">
+           <input type="submit" name="submit" value="submit" class="btn btn-primary">
+        </div><!-- ./form-group -->
+
+
+      </div><!-- ./col -->
+    </div><!-- ./row -->
+  </form><!-- ./new hostel form -->
+
+</div>

@@ -1,0 +1,60 @@
+
+  <!-- NEW TENANT
+  ==================================================-->
+  <form ng-submit="submit()">
+    <div class="row">
+      <div class="col-md-6 container-custom">
+
+        <!-- Tenant Name -->
+        <div class="form-group">
+          <input id="name" ng-model="tenant.name" placeholder="Name"
+            class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Adhaar Number -->
+        <div class="form-group">
+            <input id="adhaar" ng-model="tenant.adhaar" type="text"
+              placeholder="Adhaar Number" class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Address -->
+        <div class="form-group">
+            <input id="addess" ng-model="tenant.address" type="text"
+              placeholder="Address" class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Phone number -->
+        <div class="form-group">
+             <input id="phone" ng-model="tenant.phone" type="text"
+              placeholder="Phone Number" class="form-control">
+        </div><!-- ./form-group -->
+
+        <!-- Start Date -->
+        <div class="form-group date-custom">
+          <datepicker date-format="dd/MM/yyyy" date-set-hidden="{{tenant.startDate}}">
+            <input ng-model="tenant.startDate" type="text" 
+              class="form-control" placeholder="Start Date" />
+          </datepicker>
+        </div>
+
+        <!-- End Date -->
+        <div class="form-group date-custom">
+          <datepicker date-format="dd/MM/yyyy" date-set-hidden="{{tenant.endDate}}">
+            <input ng-model="tenant.endDate" type="text" 
+              class="form-control" placeholder="End Date"/>
+          </datepicker>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="form-group">
+           <input type="submit" name="submit" value="submit" class="btn btn-primary">
+        </div><!-- ./form-group -->
+
+
+      </div><!-- ./col -->
+    </div><!-- ./row -->
+  </form><!-- ./new hostel form -->
+
+</div>

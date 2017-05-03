@@ -16,12 +16,12 @@
             <tbody>
                 <tr ng-repeat="t in tenants">
                     <td>{{t.name}}</td>
-                    <td>{{t.room.hostel.name}}</td>
+                    <td>{{t.hostel.name}}</td>
                     <td>{{t.room.roomNumber}}</td>
                     <td>{{t.phone}}</td>
                     <td>{{}}</td>
                     <td><a href="#/tenant/{{t._id}}/edit">Edit</a></td>
-                    <td><a href="#/tenant/{{t._id}}/delete">Delete</a></td>
+                    <td><a ng-click="delete(t._id)">Delete</a></td>
                     <td><a href="#/tenant/{{t._id}}">More</a></td>
                 </tr>
             </tbody>

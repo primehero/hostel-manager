@@ -10,6 +10,10 @@ var tenantSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Room"
 	},
+	hostel: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Hostel"
+	},
 	payments: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Payment"

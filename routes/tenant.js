@@ -1,9 +1,9 @@
 var routes 		= require('express').Router();
 var Tenant 		= require('../models/tenant');
-var Room 			= require('../models/room');
+var Room 		= require('../models/room');
 var Hostel 		= require('../models/room');
 var waterfall	=	require('async-waterfall');
-var middleware = require("../krypton/middleware");
+var middleware 	= require("../krypton/middleware");
 
 
 
@@ -11,93 +11,70 @@ var middleware = require("../krypton/middleware");
 // INDEX route
 routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Tenant.find({})
-		.lean()
 		.populate('room')
+		.populate('hostel')	
 		.exec((err, foundTenants) => {
 			if (err)
-				res.json({ error : err });
-			Hostel.populate(foundTenants, {
-				path: 'room.hostel'
-			}, function(err, foundTenants) {
-				if (err)
-					res.json({ error : err });
-				res.json({ tenants : foundTenants });
-			});
-		});
+				res.json({ error : err });			
+			res.json({ tenants : foundTenants });			
+	});
 });
 
 // SHOW route
 routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 	Tenant.findById(req.params.id)
 	.populate('room')
+	.populate('hostel')	
 	.exec((err, foundTenant) => {
 		if (err)
 			res.json({ error : err });
-		// Populate hostel too.
-		Hostel.populate(foundTenant, {
-			path: 'room.hostel'
-		}, function(err, foundTenant) {
-			if (err)
-				res.json({ error : err });
-			res.json({ tenant : foundTenant });
-		});
+		res.json({ tenant : foundTenant });
 	});
 });
 
 
 // CREATE route
-
-
-/*
-// SHOW route
-routes.get("/:id", middleware.isLoggedIn, (req, res) => {
-	Tenant.findById(req.params.id)
-	.populate('Room')
-	.exec((err, foundTenant) => {
-		if (err) {
-			req.flash("error", err);
-			res.redirect("/hostel")
-		}
-		res.render('tenant/show', { tenant : foundTenant });
+routes.post("/", middleware.isLoggedIn, (req, res) => {
+	Tenant.create(req.body, (err, createdTenant) => {
+		if (err)
+			res.json({ error : err });		
+		// Find room by id and copy _creator.
+		Room.findById(req.body.room, (err, foundRoom) => {
+			if (err)
+				res.json({ error : err });
+			// Add creator.
+			createdTenant._creator  = foundRoom._creator;
+			createdTenant.save(err => {
+				if (err)
+					res.json({ error : err });
+				res.json({ msg : "Created new Tenant: " + createdTenant.name });
+			});			
+		});		
 	});
 });
 
-// EDIT route
-routes.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
-	Tenant.findById(req.params.id).exec((err, foundTenant) => {
-		if (err) {
-			req.flash("error", err);
-			res.redirect("/hostel")
-		}
-		res.render('tenant/edit', { tenant : foundTenant });
-	});
-});
 
 // UPDATE route
-routes.put("/:id", middleware.isLoggedIn, (req, res) => {
-	req.body.room = mongoose.Types.ObjectId(req.body.room);
+routes.put("/:id", middleware.isLoggedIn, (req, res) => {	
 	Tenant.findByIdAndUpdate(req.params.id, { $set : req.body }, (err, updatedTenant) => {
 		if (err)
-			req.flash("error", err);
-		else
-			req.flash("success", "Updated Tenant " + updatedTenant.name + " Successfully!");
-		res.redirect("/tenant/" + req.params.id);
+			res.json({ error : err });
+		console.log(updatedTenant);
+		res.json({ msg : "Updated " + updatedTenant.name + " !" });
 	});
 });
+
 
 // DELETE route
 routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
-	// krypton.removeTenant(tenantId, roomId);
-	krypton.removeTenant(req.params.id, req.query.room)
-	.then(room => {
-		req.flash('success', "Deleted Tenant Successfully");
-		res.redirect("/hostel");
-	})
-	.catch(err => {
-		req.flash('error', err);
-		res.redirect("/hostel");
-	});
+	Tenant.findByIdAndRemove(req.params.id, (err) => {
+		if (err)
+			res.json({ error : err });
+		res.json({ msg : "Deleted a tenant!" });
+	});	
 });
-*/
+
+
+
 
 module.exports = routes;

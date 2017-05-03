@@ -19,7 +19,7 @@
                               <td>{{p.amount}}</td>
                               <td>{{p.tenant.name}}</td>
                               <td><a href="#/payment/{{p._id}}/edit">Edit</a></td>
-                              <td><a href="#/payment/{{p._id}}/delete">Delete</a></td>
+                              <td><a ng-click="delete(p._id)">Delete</a></td>
                               <td><a href="#/payment/{{p._id}}">More</a></td>
                           </tr>
                       </tbody>

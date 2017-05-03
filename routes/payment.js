@@ -4,7 +4,6 @@ var Tenant = require("../models/tenant");
 var middleware = require("../krypton/middleware");
 
 
-
 // INDEX route
 routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Payment.find({})
@@ -20,10 +19,19 @@ routes.get("/", middleware.isLoggedIn, (req, res) => {
 routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Payment.create(req.body, (err, createdPayment) => {
 		if (err)
-			req.flash("error", err);
-		else
-			req.flash("success", "Created new payment!");
-		res.redirect("/tenant/" + createdPayment.tenant);
+			res.json({ error : err });
+		// Find it's tenant	
+		Tenant.findById(createdPayment.tenant, (err, foundTenant) => {
+			if (err)
+				res.json({ error : err });	
+			// Copy creator
+			createdPayment._creator = foundTenant._creator;
+			createdPayment.save((err) => {
+				if (err)
+					res.json({ error : err });
+				res.json({ msg : "Created new payment!" });		
+			});
+		});			
 	});
 });
 
@@ -37,6 +45,25 @@ routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 			res.json({ payment : foundPayment });
 	});
 });
+
+// UPDATE route
+routes.put("/:id", middleware.isLoggedIn, (req, res) => {
+	Payment.findByIdAndUpdate(req.params.id, { $set : req.body }, (err, updatedPayment) => {
+		if (err)
+			res.json({ error : err });
+		res.json({ msg : "Updated payment Successfully!" });		
+	});
+});
+
+// DELETE route
+routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
+	Payment.findByIdAndRemove(req.params.id, (err) => {
+		if (err)
+			res.json({ error : err });
+		res.json({ msg : "Deleted payment Successfully!" });		
+	});
+});
+
 
 
 /*

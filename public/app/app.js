@@ -1,5 +1,5 @@
  (function() {
-  let app = angular.module('mainApp', [ '720kb.datepicker', 'ngRoute', 'fetchModule']);
+  let app = angular.module('mainApp', [ 'ngRoute', '720kb.datepicker', 'fetchModule']);
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
 
@@ -95,6 +95,11 @@
         templateUrl: "/app/templates/tenant/show.html",
         controller: "TenantShowCtrl"
       })
+      // Edit 
+      .when("/tenant/:id/edit", {
+        templateUrl: "/app/templates/tenant/edit.html",
+        controller: "TenantEditCtrl"
+      })
 
       // PAYMENT
       // ====
@@ -108,7 +113,16 @@
         templateUrl: "/app/templates/payment/show.html",
         controller: "PayShowCtrl"
       })
-
+      // NEW
+      .when("/payment/:id", {
+        templateUrl: "/app/templates/payment/new.html",
+        controller: "PayNewCtrl"
+      })
+      // Edit
+      .when("/payment/:id/edit", {
+        templateUrl: "/app/templates/payment/edit.html",
+        controller: "PayEditCtrl"
+      })
 
 
 

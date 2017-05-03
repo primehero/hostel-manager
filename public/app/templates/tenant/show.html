@@ -43,7 +43,7 @@
                 <tbody>
                   <tr>
                     <td><b>Hostel Name</b>:</td>
-                    <td>{{tenant.room.hostel.name}}</td>
+                    <td>{{tenant.hostel.name}}</td>
                   </tr>
                   <tr>
                     <td><b>Floor Name</b>:</td>
@@ -60,12 +60,12 @@
     </div><!-- ./row -->
 
     <!-- EDIT -->
-    <a href="#/hostel/58ef57e67a310d0011d7ab5f/edit"
+    <a href="#/tenant/{{tenant._id}}/edit"
       class="btn btn-warning btn-xs">
         Edit
     </a>
     <!-- DELETE -->
-    <a href="#/hostel/58ef57e67a310d0011d7ab5f/delete"
+    <a ng-click="delete(tenant._id)"    
       class="btn btn-danger btn-xs">
         Delete
     </a>
