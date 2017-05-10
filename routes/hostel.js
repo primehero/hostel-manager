@@ -5,13 +5,15 @@
 
 var routes 			= require("express").Router();
 var Hostel 			= require("../models/hostel");
-var middleware = require("../krypton/middleware");
-
+var middleware 	= require("../krypton/middleware");
+var mongoose 		= require('mongoose');
 
 
 // INDEX route
 routes.get("/", middleware.isLoggedIn, (req, res) => {
-	Hostel.find({}, (err, foundHostels) => {
+	Hostel.find({})
+		.byCreator(req.user)
+		.exec((err, foundHostels) => {
 		if (err)
 			res.json({ error : err });
 		res.json({ hostels : foundHostels });
@@ -20,18 +22,13 @@ routes.get("/", middleware.isLoggedIn, (req, res) => {
 
 // SHOW route
 routes.get('/:id', middleware.isLoggedIn, (req, res) => {
-	Hostel.findById(req.params.id)
-		.populate('category')
-		.populate('_creator._id')
-		.exec((err, foundHostel) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ hostel : foundHostel });
-	});
+	Hostel.rjFindById(
+		req.params.id, 'category _creator._id',
+		req.user, res );
 });
 
-// CREATE
-routes.post("/", middleware.isLoggedIn, (req, res) => {
+// CREATE route
+routes.post("/", middleware.isAdmin, (req, res) => {
 	Hostel.create(req.body, (err, createdHostel) => {
 		if (err)
 			res.json({ error : err });
@@ -41,22 +38,15 @@ routes.post("/", middleware.isLoggedIn, (req, res) => {
 
 // UPDATE route
 routes.put("/:id", middleware.isLoggedIn, (req, res) => {
-		Hostel.findByIdAndUpdate(req.params.id,
-			{ $set : req.body },
-			(err, updatedHostel) => {
-			if (err)
-				res.json({ error : err });
-			res.json({ msg : "Updated hostel " + updatedHostel.name + " Successfully!" });
-		});
+	Hostel.rjFindByIdAndUpdate(
+		req.params.id, req.user,
+		res, req.body );
 });
 
 // DELETE route
-routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
-	Hostel.findByIdAndRemove(req.params.id, (err) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ msg : "Successfully deleted a hostel!" });
-	});
+routes.delete("/:id", middleware.isAdmin, (req, res) => {
+	Hostel.rjFindByIdAndRemove(
+		req.params.id, req.user, res );
 });
 
 

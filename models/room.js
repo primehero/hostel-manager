@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var utils			= require('../krypton/functions');
+
 mongoose.Promise = global.Promise;
 
 roomSchema = mongoose.Schema({
@@ -54,5 +56,21 @@ roomSchema.methods.getRelatedRooms = function(mongooseId) {
 	});
 };
 
+// Filters by creator id
+roomSchema.query.byCreator = utils.byCreator;
+// Static for searching by id and checking owner.
+roomSchema.query.checkOwner = utils.checkOwner;
+
+// METHODS
+// ====
+// FINDBYID
+roomSchema.statics.rjFindById =
+	utils.rjFindById;
+// UPDATE
+roomSchema.statics.rjFindByIdAndUpdate =
+	utils.rjFindByIdAndUpdate;
+// REMOVE
+roomSchema.statics.rjFindByIdAndRemove =
+	utils.rjFindByIdAndRemove;
 
 module.exports = mongoose.model("Room", roomSchema);

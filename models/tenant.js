@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var utils			= require('../krypton/functions');
+
 mongoose.Promise = global.Promise;
 
 var tenantSchema = mongoose.Schema({
@@ -65,6 +67,23 @@ tenantSchema.methods.addPayment = function(mongooseId, paymentId) {
 		});
 	});
 };
+
+// Filters by creator id
+tenantSchema.query.byCreator = utils.byCreator;
+// Static for searching by id and checking owner.
+tenantSchema.query.checkOwner = utils.checkOwner;
+
+// METHODS
+// ====
+// FINDBYID
+tenantSchema.statics.rjFindById =
+	utils.rjFindById;
+// UPDATE
+tenantSchema.statics.rjFindByIdAndUpdate =
+	utils.rjFindByIdAndUpdate;
+// REMOVE
+tenantSchema.statics.rjFindByIdAndRemove =
+	utils.rjFindByIdAndRemove;
 
 
 module.exports = mongoose.model("Tenant", tenantSchema);

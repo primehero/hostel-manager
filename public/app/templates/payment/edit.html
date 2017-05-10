@@ -7,9 +7,7 @@
 
         <!-- Tenant Select -->
         <div class="form-group">
-          <select id="userName" ng-model="payment.tenant"
-            ng-options="t.name for t in tenants" class="form-control">
-          </select>
+          <input type="text" class="form-control" value="{{payment.tenant.name}}" disabled="">
         </div><!-- ./form-group -->
 
         <!-- Payment Title -->
@@ -33,7 +31,7 @@
         <!-- Start Date -->
         <div class="form-group date-custom">
           <datepicker date-format="dd/MM/yyyy">
-            <input ng-model="tenant.nextDate" type="text" 
+            <input ng-model="payment.nextDate" type="text"
               class="form-control" placeholder="Next Payment Date" />
           </datepicker>
         </div>

@@ -15,14 +15,14 @@
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-user"></i>
-              John Smith
+              {{user.username}}
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#">
+                    <a href="/logout">
                       <i class="fa fa-fw fa-power-off"></i>
                       Log Out
                     </a>
@@ -41,7 +41,7 @@
                   Dashboard
                 </a>
             </li>
-            <li ng-click="nav.setOption(1)"
+            <li ng-show="user.admin" ng-click="nav.setOption(1)"
               ng-class="(nav.getOption() == 1) ? 'active' : ''">
                 <a href="#/user">
                   <i class="fa fa-user-plus" aria-hidden="true"></i>
@@ -56,7 +56,7 @@
                   <i class="fa fa-fw fa-caret-down"></i>
                 </a>
                 <ul id="demo" class="collapse">
-                    <li>
+                    <li ng-show="user.admin">
                         <a href="#/category">Hostel Types</a>
                     </li>
                     <li>
@@ -71,7 +71,7 @@
                     <li>
                         <a href="#/payment">Payments</a>
                     </li>
-                    <li>
+                    <li ng-show="user.admin">
                         <a href="#/user">Users</a>
                     </li>
                 </ul>

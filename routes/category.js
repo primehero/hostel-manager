@@ -5,7 +5,7 @@ var middleware = require("../krypton/middleware");
 
 
 // INDEX route
-routes.get("/", middleware.isLoggedIn, (req, res) => {
+routes.get("/", middleware.isAdmin, (req, res) => {
 	Category.find({}, (err, foundCategories) => {
 		if (err)
 			res.json({ error : err });
@@ -14,7 +14,7 @@ routes.get("/", middleware.isLoggedIn, (req, res) => {
 });
 
 // SHOW route
-routes.get("/:id", middleware.isLoggedIn, (req, res) => {
+routes.get("/:id", middleware.isAdmin, (req, res) => {
 	Category.findById(req.params.id, (err, foundCategory) => {
 		if (err)
 			res.json({ error : err });
@@ -23,7 +23,7 @@ routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 });
 
 // CREATE route
-routes.post("/", middleware.isLoggedIn, (req, res) => {
+routes.post("/", middleware.isAdmin, (req, res) => {
 	Category.create(req.body, (err, createdCategory) => {
 		if (err)
 			res.json({ error : err });
@@ -32,7 +32,7 @@ routes.post("/", middleware.isLoggedIn, (req, res) => {
 });
 
 // UPDATE route
-routes.put("/:id", middleware.isLoggedIn, (req, res) => {
+routes.put("/:id", middleware.isAdmin, (req, res) => {
 	Category.findByIdAndUpdate(req.params.id, { $set : req.body },
 		(err, updatedCategory) => {
 			if (err)
@@ -42,7 +42,7 @@ routes.put("/:id", middleware.isLoggedIn, (req, res) => {
 });
 
 // DELETE route
-routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
+routes.delete("/:id", middleware.isAdmin, (req, res) => {
 	Category.findByIdAndRemove(req.params.id, (err) => {
 		if (err)
 			res.json({ error : err });

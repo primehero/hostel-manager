@@ -13,9 +13,8 @@
         </div><!-- ./form-group -->
 
         <div class="form-group">
-          <select id="category" ng-model="hostel.category"
-            ng-options="c.name for c in cats" class="form-control">
-          </select>
+          <input id="category" ng-model="categoryName"
+              disabled="" class="form-control">          
         </div><!-- ./form-group -->
 
         <div class="form-group">
@@ -47,13 +46,6 @@
             <input id="PhoneNumber" ng-model="hostel.warden.phone" type="text"
                 placeholder="Warden PhoneNumber" class="form-control">
         </div><!-- ./form-control -->
-
-        <!-- Select Basic -->
-        <div class="form-group">
-            <select id="ownerNames" ng-model="hostel._creator"
-              ng-options="u.username for u in users" class="form-control">
-            </select>
-        </div><!-- ./form-group -->
 
 
         <div class="form-group">

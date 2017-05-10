@@ -11,25 +11,21 @@ var middleware 	= require("../krypton/middleware");
 // INDEX route
 routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Tenant.find({})
+		.byCreator(req.user)
 		.populate('room')
-		.populate('hostel')	
+		.populate('hostel')
 		.exec((err, foundTenants) => {
 			if (err)
-				res.json({ error : err });			
-			res.json({ tenants : foundTenants });			
+				res.json({ error : err });
+			res.json({ tenants : foundTenants });
 	});
 });
 
 // SHOW route
 routes.get("/:id", middleware.isLoggedIn, (req, res) => {
-	Tenant.findById(req.params.id)
-	.populate('room')
-	.populate('hostel')	
-	.exec((err, foundTenant) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ tenant : foundTenant });
-	});
+	Tenant.rjFindById(
+		req.params.id, 'hostel',
+		req.user, res );
 });
 
 
@@ -37,7 +33,7 @@ routes.get("/:id", middleware.isLoggedIn, (req, res) => {
 routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Tenant.create(req.body, (err, createdTenant) => {
 		if (err)
-			res.json({ error : err });		
+			res.json({ error : err });
 		// Find room by id and copy _creator.
 		Room.findById(req.body.room, (err, foundRoom) => {
 			if (err)
@@ -48,30 +44,24 @@ routes.post("/", middleware.isLoggedIn, (req, res) => {
 				if (err)
 					res.json({ error : err });
 				res.json({ msg : "Created new Tenant: " + createdTenant.name });
-			});			
-		});		
+			});
+		});
 	});
 });
 
 
 // UPDATE route
-routes.put("/:id", middleware.isLoggedIn, (req, res) => {	
-	Tenant.findByIdAndUpdate(req.params.id, { $set : req.body }, (err, updatedTenant) => {
-		if (err)
-			res.json({ error : err });
-		console.log(updatedTenant);
-		res.json({ msg : "Updated " + updatedTenant.name + " !" });
-	});
+routes.put("/:id", middleware.isLoggedIn, (req, res) => {
+	Tenant.rjFindByIdAndUpdate(
+		req.params.id, req.user,
+		res, req.body );
 });
 
 
 // DELETE route
 routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
-	Tenant.findByIdAndRemove(req.params.id, (err) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ msg : "Deleted a tenant!" });
-	});	
+	Tenant.rjFindByIdAndRemove(
+		req.params.id, req.user, res );
 });
 
 

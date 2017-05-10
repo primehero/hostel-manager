@@ -87,6 +87,17 @@ app.post("/login", passport.authenticate("local",
       failureRedirect: "/login",
       failureFlash: true
     }), function(req, res){
+});
+
+app.get("/logout", function(req, res){
+   req.logout();
+   req.flash("success", "See you later!");
+   res.redirect("/login");
+});
+
+// CurrentUser
+app.get("/currentUser", middleware.isLoggedIn, (req, res) => {
+  res.json({ user : req.user });
 })
 
 /**

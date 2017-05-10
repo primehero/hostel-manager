@@ -1,6 +1,6 @@
 
 /**
- * Sending delete request to the server.
+ * Sending delete to the server.
  */
 var dlt = function($http, $rootScope, url, id) {
   $http({
@@ -20,10 +20,32 @@ var dlt = function($http, $rootScope, url, id) {
 (function() {
   let fetchModule = angular.module('fetchModule');
 
-  fetchModule.controller('DashCtrl', ['$scope', '$rootScope', 'Request',
-    function($scope, $rootScope, Request) {
-      $rootScope.heading = 'Dashboard';
+  fetchModule.controller('DashCtrl', [
+    '$scope', '$rootScope', '$http', 'CurrentUser',
+    function($scope, $rootScope, $http, CurrentUser)  {
+      $rootScope.heading  = 'Dashboard';
       $rootScope.heading2 = undefined;
+      $rootScope.success  = undefined;
+      $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
+
+      $http.get('/hostel')
+      .then(res => {
+           $scope.numHostels  = res.data.hostels.length;
+           return $http.get('/room');
+      })
+      .then(res => {
+          $scope.numRooms  = res.data.rooms.length;
+          return $http.get('/tenant');
+      })
+      .then(res => {
+          $scope.numTenants  = res.data.tenants.length;
+          return $http.get('/payment');
+      })
+      .then(res => {
+          $scope.numPayments  = res.data.payments.length;
+      })
+      .catch(err => { $scope.error  = err; });
   }]);
 
 
@@ -34,14 +56,18 @@ var dlt = function($http, $rootScope, url, id) {
    */
   // INDEX
   fetchModule.controller('CatsCtrl',
-    ['$scope', '$rootScope', 'Request', '$http', '$window', '$route', '$timeout',
-    function($scope, $rootScope, Request, $http, $window, $route, $timeout) {
+    ['$scope', '$rootScope', '$http',
+     '$window', '$route', '$timeout', 'CurrentUser',
+    function(
+      $scope, $rootScope, $http,
+      $window, $route, $timeout, CurrentUser ) {
       // Root Scope
       $rootScope.heading  = 'Categories';
       $rootScope.heading2 = undefined;
       $rootScope.newLink  = "#/category/new";
       $rootScope.success  = undefined;
       $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
       // Delete function
       $scope.delete = (function($http, $rootScope, url, id) {
@@ -60,14 +86,16 @@ var dlt = function($http, $rootScope, url, id) {
 
   }]);
   // New
-  fetchModule.controller('CatsNewCtrl', ['$scope', '$rootScope', '$http',
-    function($scope, $rootScope, $http) {
+  fetchModule.controller('CatsNewCtrl', [
+    '$scope', '$rootScope', '$http', 'CurrentUser',
+    function($scope, $rootScope, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading  = 'Categories';
       $rootScope.heading2 = 'new';
       $rootScope.newLink  = undefined;
       $rootScope.success  = undefined;
       $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
       $scope.catName = "";
       $scope.submit = function() {
@@ -87,14 +115,18 @@ var dlt = function($http, $rootScope, url, id) {
   }]);
   // EDIT
   fetchModule.controller('CatsEditCtrl', [
-    '$scope', '$rootScope', '$http', '$routeParams', '$timeout', '$route',
-    function($scope, $rootScope, $http, $routeParams, $timeout, $route) {
+    '$scope', '$rootScope', '$http', '$routeParams',
+    '$timeout', '$route', 'CurrentUser',
+    function(
+      $scope, $rootScope, $http,
+      $routeParams, $timeout, $route, CurrentUser ) {
       // Root Scope
       $rootScope.heading  = 'Categories';
       $rootScope.heading2 = 'not edit';
       $rootScope.newLink  = undefined;
       $rootScope.success  = undefined;
       $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
 
       // Sending data to template.
@@ -138,12 +170,16 @@ var dlt = function($http, $rootScope, url, id) {
    */
    // Index
    fetchModule.controller('HostelCtrl', [
-     '$scope', '$rootScope', '$http',
-     function($scope, $rootScope, $http) {
+     '$scope', '$rootScope', '$http', 'CurrentUser',
+     function($scope, $rootScope, $http, CurrentUser) {
        // Root Scope
-       $rootScope.heading = 'Hostels';
-       $rootScope.heading2 = undefined;
-       $rootScope.newLink  = "#/hostel/new";
+       $rootScope.heading   = 'Hostels';
+       $rootScope.heading2  = undefined;
+       $rootScope.newLink   = "#/hostel/new";
+       $rootScope.success   = undefined;
+       $rootScope.error     = undefined;
+       CurrentUser.get($rootScope);
+
 
        // Delete function
        $scope.delete = (function($http, $rootScope, url, id) {
@@ -160,18 +196,19 @@ var dlt = function($http, $rootScope, url, id) {
    }]);
    // Show
    fetchModule.controller('HostelShowCtrl', [
-     '$scope', '$rootScope', '$routeParams', '$http',
+     '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
      function($scope, $rootScope, $routeParams, $http) {
       // Root Scope
       $rootScope.heading = "Hostel";
       $rootScope.newLink = undefined;
       $rootScope.success = undefined;
       $rootScope.failure = undefined;
+      CurrentUser.get($rootScope);
 
       $http.get('/hostel/' + $routeParams.id)
       .then(res => {
-        $rootScope.heading2 = res.data.hostel.name;
-        $scope.hostel = res.data.hostel;
+        $rootScope.heading2 = res.data.result.name;
+        $scope.hostel = res.data.result;
       })
       .catch(err => { $scope.error  = err; });
 
@@ -183,14 +220,16 @@ var dlt = function($http, $rootScope, url, id) {
 
    }]);
    // NEW
-   fetchModule.controller('HostelNewCtrl', ['$scope', '$rootScope', '$http',
-     function($scope, $rootScope, $http) {
+   fetchModule.controller('HostelNewCtrl', [
+     '$scope', '$rootScope', '$http', 'CurrentUser',
+     function($scope, $rootScope, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading  = 'Hostels';
       $rootScope.heading2 = 'new';
       $rootScope.newLink  = undefined;
       $rootScope.success  = undefined;
       $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
       // Get categories and users
       $http.get('/category')
@@ -229,28 +268,21 @@ var dlt = function($http, $rootScope, url, id) {
    }]);
    // EDIT
    fetchModule.controller('HostelEditCtrl', [
-     '$scope', '$rootScope', '$routeParams', '$http',
-     function($scope, $rootScope, $routeParams, $http) {
+     '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+     function($scope, $rootScope, $routeParams, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading = "Hostel";
       $rootScope.newLink  = undefined;
+      $rootScope.success  = undefined;
+      $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
-      // Get previos data from server
+      // Get previous data from server
       $http.get('/hostel/' + $routeParams.id)
       .then(res => {
-        $rootScope.heading2 = res.data.hostel.name;
-        $scope.hostel = res.data.hostel;
-        return $http.get('/category');
-      })
-      .then((res) => {
-        $scope.cats = res.data.categories;
-        // Default for select
-        $scope.hostel.category = $scope.cats[0];
-        return $http.get('/user')
-      })
-      .then((res) => {
-        $scope.users = res.data.users;
-        $scope.hostel._creator = $scope.users[0];
+        $rootScope.heading2 = res.data.result.name;
+        $scope.hostel = res.data.result;
+        $scope.categoryName = res.data.result.category.name;
       })
       .catch((err) => {
         $rootScope.error = err;
@@ -259,7 +291,6 @@ var dlt = function($http, $rootScope, url, id) {
       // Submit data to the server.
       $scope.submit = function(id) {
         $scope.hostel._creator._username = $scope.hostel._creator.username;
-        console.log($scope.hostel);
         $http({
           url: '/hostel/' + id,
           method: 'PUT',
@@ -267,7 +298,10 @@ var dlt = function($http, $rootScope, url, id) {
           headers: { 'Content-Type' : 'application/json' }
         })
         .then((res) => {
-          $rootScope.success = res.data.msg;
+          if (res.data.error)
+            $rootScope.error = res.data.error;
+          if (res.data.msg)
+            $rootScope.success = res.data.msg;
         })
         .catch(error => {
           $rootScope.error = "Error: " + error.status;
@@ -292,12 +326,15 @@ var dlt = function($http, $rootScope, url, id) {
    */
    // Index
    fetchModule.controller('RoomCtrl', [
-     '$scope', '$rootScope', 'Request', '$http',
-     function($scope, $rootScope, Request, $http) {
+     '$scope', '$rootScope', '$http', 'CurrentUser',
+     function($scope, $rootScope, $http, CurrentUser) {
        // Root Scope
        $rootScope.heading   = "Rooms";
        $rootScope.heading2  = undefined;
        $rootScope.newLink   = "#/room/new";
+       $rootScope.success  = undefined;
+       $rootScope.error    = undefined;
+       CurrentUser.get($rootScope);
 
        // Delete function
        $scope.delete = (function($http, $rootScope, url, id) {
@@ -310,27 +347,37 @@ var dlt = function($http, $rootScope, url, id) {
        .catch(err => { $scope.error = err; });
    }]);
    // Show
-   fetchModule.controller('RoomShowCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-    function($scope, $rootScope, $routeParams, $http) {
+   fetchModule.controller('RoomShowCtrl', [
+    '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+    function($scope, $rootScope, $routeParams, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading = "Rooms";
       $rootScope.newLink  = undefined;
+      $rootScope.success  = undefined;
+      $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
       $http.get('/room/' + $routeParams.id)
       .then(res => {
-        $scope.room = res.data.room;
-        $rootScope.heading2 = res.data.room.roomNumber;
+        if (res.data.error)
+          $rootScope.error = res.data.error;
+
+        $scope.room         = res.data.result;
+        $rootScope.heading2 = res.data.result.roomNumber;
       })
       .catch(err => { $scope.error  = err; });
    }]);
    // NEW
    fetchModule.controller('RoomNewCtrl', [
-    '$scope', '$rootScope', '$routeParams', '$http',
-    function($scope, $rootScope, $routeParams, $http) {
+    '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+    function($scope, $rootScope, $routeParams, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading  = "Rooms";
       $rootScope.heading2 = "new";
       $rootScope.newLink  = undefined;
+      $rootScope.success  = undefined;
+      $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
       $http.get('/hostel')
       .then((res) => {
@@ -362,24 +409,20 @@ var dlt = function($http, $rootScope, url, id) {
    }]);
    // EDIT
    fetchModule.controller('RoomEditCtrl', [
-    '$scope', '$rootScope', '$routeParams', '$http',
-    function($scope, $rootScope, $routeParams, $http) {
+    '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+    function($scope, $rootScope, $routeParams, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading  = "Rooms";
-      $rootScope.heading2 = "new";
       $rootScope.newLink  = undefined;
       $rootScope.success  = undefined;
       $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
 
       // Get Previous details
       $http.get('/room/' + $routeParams.id)
       .then((res) => {
-        $scope.room = res.data.room;
-        return $http.get('/hostel');
-      })
-      .then((res) => {
-        $scope.hostels = res.data.hostels;
-        $scope.room.hostel = res.data.hostels[0];
+        $scope.room         = res.data.result;
+        $rootScope.heading2 = res.data.result.roomNumber;
       })
       .catch((err) => {
         $rootScope.error = err;
@@ -416,12 +459,17 @@ var dlt = function($http, $rootScope, url, id) {
    * ========================================
    */
    // Index
-   fetchModule.controller('TenantCtrl', ['$scope', '$rootScope', '$http',
-    function($scope, $rootScope, $http) {
+   fetchModule.controller('TenantCtrl', [
+    '$scope', '$rootScope', '$http','CurrentUser',
+    function($scope, $rootScope, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading = "Tenants";
       $rootScope.heading2 = undefined;
       $rootScope.newLink  = "#/tenant/new";
+      $rootScope.success  = undefined;
+      $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
+
 
       // Delete function
       $scope.delete = (function($http, $rootScope, url, id) {
@@ -434,11 +482,16 @@ var dlt = function($http, $rootScope, url, id) {
       .catch(err => { $scope.error = err; });
   }]);
   // Show
-  fetchModule.controller('TenantShowCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-    function($scope, $rootScope, $routeParams, $http) {
+  fetchModule.controller('TenantShowCtrl', [
+    '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+    function($scope, $rootScope, $routeParams, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading = "Tenant";
       $rootScope.newLink = undefined;
+      $rootScope.success = undefined;
+      $rootScope.error   = undefined;
+      CurrentUser.get($rootScope);
+
 
       // Delete function
       $scope.delete = (function($http, $rootScope, url, id) {
@@ -449,19 +502,23 @@ var dlt = function($http, $rootScope, url, id) {
 
       $http.get('/tenant/' + $routeParams.id)
       .then(res => {
-        $rootScope.heading2 = res.data.tenant.name;
-        $scope.tenant = res.data.tenant;
+        $rootScope.heading2 = res.data.result.name;
+        $scope.tenant = res.data.result;
       })
       .catch(err => { $scope.error  = err; });
   }]);
    // New
   fetchModule.controller('TenantNewCtrl', [
-     '$scope', '$rootScope', '$routeParams', '$http',
-     function($scope, $rootScope, $routeParams, $http) {
+     '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+     function($scope, $rootScope, $routeParams, $http, CurrentUser) {
        // Root Scope
        $rootScope.heading   = "Tenant";
        $rootScope.heading2  = "new";
        $rootScope.newLink   = undefined;
+       $rootScope.success  = undefined;
+       $rootScope.error    = undefined;
+       CurrentUser.get($rootScope);
+
 
        $http.get('/hostel')
        .then((res) => {
@@ -479,12 +536,12 @@ var dlt = function($http, $rootScope, url, id) {
         { name: "Enim 1", id: 1 },
         { name: "Enim 2", id: 2 }
       ];
-       
-      $scope.facilities = [];            
+
+      $scope.facilities = [];
       $scope.date = null;
 
       // Send Data to the Server.
-      $scope.submit = function() {        
+      $scope.submit = function() {
         $scope.tenant.amenities = $scope.amenities.filter((am, indx) => {
           if ($scope.facilities[indx])
             return true;
@@ -511,20 +568,25 @@ var dlt = function($http, $rootScope, url, id) {
       };
      }
   ]);
-  // EDIT  
-  fetchModule.controller('TenantEditCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-    function($scope, $rootScope, $routeParams, $http) {
+  // EDIT
+  fetchModule.controller('TenantEditCtrl', [
+    '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+    function($scope, $rootScope, $routeParams, $http, CurrentUser) {
       // Root Scope
       $rootScope.heading = "Tenant";
       $rootScope.newLink = undefined;
+      $rootScope.success  = undefined;
+      $rootScope.error    = undefined;
+      CurrentUser.get($rootScope);
+
 
       // Getting tenant details
       $http.get('/tenant/' + $routeParams.id)
       .then(res => {
-        $rootScope.heading2 = res.data.tenant.name;
-        $scope.tenant = res.data.tenant;
+        $rootScope.heading2 = res.data.result.name;
+        $scope.tenant = res.data.result;
       })
-      .catch((err) => { $rootScope.error = err; }); 
+      .catch((err) => { $rootScope.error = err; });
 
       // $scope.amenities = ["Wifi", "Enim 1", "Enim 2"];
       $scope.amenities = [
@@ -532,11 +594,11 @@ var dlt = function($http, $rootScope, url, id) {
         { name: "Enim 1", id: 1 },
         { name: "Enim 2", id: 2 }
       ];
-       
-      $scope.facilities = [];            
+
+      $scope.facilities = [];
       $scope.date = null;
 
-      $scope.submit = function() {        
+      $scope.submit = function() {
         $http({
           url: '/tenant/' + $routeParams.id,
           method: "PUT",
@@ -568,12 +630,17 @@ var dlt = function($http, $rootScope, url, id) {
    * ========================================
    */
     // Index
-    fetchModule.controller('PayCtrl', ['$scope', '$rootScope', '$http',
-      function($scope, $rootScope, $http) {
+    fetchModule.controller('PayCtrl', [
+      '$scope', '$rootScope', '$http', 'CurrentUser',
+      function($scope, $rootScope, $http, CurrentUser) {
         // Root Scope
         $rootScope.heading = "Payments";
         $rootScope.heading2 = undefined;
         $rootScope.newLink  = "#/payment/new";
+        $rootScope.success  = undefined;
+        $rootScope.error    = undefined;
+        CurrentUser.get($rootScope);
+
 
         $http.get('/payment')
         .then(res => { $rootScope.payments = res.data.payments; })
@@ -587,11 +654,16 @@ var dlt = function($http, $rootScope, url, id) {
 
     }]);
     // Show
-    fetchModule.controller('PayShowCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-      function($scope, $rootScope, $routeParams, $http) {
+    fetchModule.controller('PayShowCtrl', [
+      '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+      function($scope, $rootScope, $routeParams, $http, CurrentUser) {
         // Root Scope
-        $rootScope.heading = "Payment";        
+        $rootScope.heading = "Payment";
         $rootScope.newLink  = undefined;
+        $rootScope.success  = undefined;
+        $rootScope.error    = undefined;
+        CurrentUser.get($rootScope);
+
 
         // Delete function
         $scope.delete = (function($http, $rootScope, url, id) {
@@ -601,25 +673,26 @@ var dlt = function($http, $rootScope, url, id) {
 
 
         $http.get('/payment/' + $routeParams.id)
-        .then(res => {      
-          try{    
-            $rootScope.heading2 = res.data.payment.tenant.name;
-          } catch (err) {            
-            $rootScope.payment = res.data.payment;
-            console.warn(err);
-          }
+        .then(res => {
+            $rootScope.heading2 = res.data.result.tenant.name;
+            $scope.payment = res.data.result;
         })
         .catch(err => { $rootScope.error  = err; });
     }]);
     // NEW
-    fetchModule.controller('PayNewCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-      function($scope, $rootScope, $routeParams, $http) {
+    fetchModule.controller('PayNewCtrl', [
+      '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+      function($scope, $rootScope, $routeParams, $http, CurrentUser) {
         // Root Scope
         $rootScope.heading = "Payments";
         $rootScope.newLink  = undefined;
+        $rootScope.success  = undefined;
+        $rootScope.error    = undefined;
+        CurrentUser.get($rootScope);
+
 
         $http.get('/tenant')
-        .then((res) => { 
+        .then((res) => {
           $scope.tenants = res.data.tenants;
           $scope.payment = {};
           $scope.payment.tenant = res.data.tenants[0];
@@ -634,8 +707,10 @@ var dlt = function($http, $rootScope, url, id) {
             headers: { 'Content-Type' : 'application/json' }
           })
           .then((res) => {
-            $rootScope.success = res.data.msg;
-            $rootScope.error = undefined;
+            if (res.data.error)
+              $rootScope.error = res.data.error;
+            if (res.data.msg)
+              $rootScope.success = res.data.msg;
           })
           .catch((err) => {
             $rootScope.success = undefined;
@@ -646,9 +721,43 @@ var dlt = function($http, $rootScope, url, id) {
       }
     ]);
     // EDIT
-    fetchModule.controller('PayNewCtrl', ['$scope', '$rootScope', '$routeParams', '$http',
-      function($scope, $rootScope, $routeParams, $http) {
-        
+    fetchModule.controller('PayEditCtrl', [
+      '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+      function($scope, $rootScope, $routeParams, $http, CurrentUser) {
+        // Root Scope
+        $rootScope.heading = "Payments";
+        $rootScope.newLink  = undefined;
+        $rootScope.error = undefined;
+        $rootScope.success = undefined;
+        CurrentUser.get($rootScope);
+
+
+        $http.get('/payment/' + $routeParams.id)
+        .then((res) => {
+          $rootScope.heading2 = res.data.result.tenant.name;
+          $scope.payment = res.data.result;
+        })
+        .catch((err) => {
+          $rootScope.success = undefined;
+          $rootScope.error = err;
+        });
+
+        $scope.submit = function() {
+          $http({
+            url: '/payment/' + $routeParams.id,
+            method: "PUT",
+            data: $scope.payment,
+            headers: { 'Content-Type' : 'application/json' }
+          })
+          .then(res => {
+            $rootScope.success = res.data.msg;
+          })
+          .catch(err => {
+            $rootScope.success = undefined;
+            $rootScope.error = err;
+          });
+        };
+
     }]);
 
 
@@ -661,12 +770,17 @@ var dlt = function($http, $rootScope, url, id) {
    * ========================================
    */
    // INDEX
-   fetchModule.controller('UserCtrl', ['$scope', '$rootScope', '$http',
-    function($scope, $rootScope, $http) {
+   fetchModule.controller('UserCtrl', [
+    '$scope', '$rootScope', '$http', 'CurrentUser',
+    function($scope, $rootScope, $http, CurrentUser) {
      // Root Scope
      $rootScope.heading = "Users";
      $rootScope.heading2 = undefined;
      $rootScope.newLink  = "#/user/new";
+     $rootScope.success  = undefined;
+     $rootScope.error    = undefined;
+     CurrentUser.get($rootScope);
+
 
      // Delete function
      $scope.delete = (function($http, $rootScope, url, id) {
@@ -681,12 +795,16 @@ var dlt = function($http, $rootScope, url, id) {
    }]);
    // NEW
    fetchModule.controller('UserNewCtrl', [
-     '$scope', '$rootScope', '$routeParams', '$http',
-     function($scope, $rootScope, $routeParams, $http) {
+     '$scope', '$rootScope', '$routeParams', '$http', 'CurrentUser',
+     function($scope, $rootScope, $routeParams, $http, CurrentUser) {
        // Root Scope
        $rootScope.heading   = "User";
        $rootScope.heading2  = "new";
        $rootScope.newLink   = undefined;
+       $rootScope.success  = undefined;
+       $rootScope.error    = undefined;
+       CurrentUser.get($rootScope);
+
 
        $scope.user = {};
        $scope.submit = function() {

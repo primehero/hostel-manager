@@ -11,22 +11,21 @@ var middleware 		= require("../krypton/middleware");
 
 // INDEX route
 routes.get("/", middleware.isLoggedIn, (req, res) => {
-	Room.find({}).populate('hostel').exec((err, foundRooms) => {
+	Room.find({})
+		.byCreator(req.user)
+		.populate('hostel')
+		.exec((err, foundRooms) => {
 		if (err)
-			res.json({error : err});
-		res.json({rooms : foundRooms});
+			res.json({ error : err });
+			res.json({rooms : foundRooms});
 	});
 });
 
 // SHOW route
 routes.get("/:id", middleware.isLoggedIn, (req, res) => {
-	Room.findById(req.params.id)
-		.populate('hostel')
-		.exec((err, foundRoom) => {
-			if (err)
-				res.json({ error : err });
-		res.json({ room : foundRoom });
-	});
+	Room.rjFindById(
+		req.params.id, 'hostel',
+		req.user, res );
 });
 
 // CREATE route
@@ -55,23 +54,15 @@ routes.post("/", middleware.isLoggedIn, (req, res) => {
 
 // UPDATE route
 routes.put("/:id", middleware.isLoggedIn, (req, res) => {
-	Room.findByIdAndUpdate(req.params.id,
-			{ $set : req.body },
-			(err, updatedRoom) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ msg : "Updated Room " + updatedRoom.roomNumber +
-		 	" Successfully!" });
-	});
+	Room.rjFindByIdAndUpdate(
+		req.params.id, req.user,
+		res, req.body );
 });
 
 // DELETE route
 routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
-	Room.findByIdAndRemove(req.params.id, (err) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ msg : "Deleted Room Successfully" });
-	});
+	Room.rjFindByIdAndRemove(
+		req.params.id, req.user, res );
 });
 
 

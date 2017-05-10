@@ -4,7 +4,7 @@ var middleware = require("../krypton/middleware");
 
 
 // INDEX route
-routes.get('/', middleware.isLoggedIn, function(req, res) {
+routes.get('/', middleware.isAdmin, function(req, res) {
   User.find({}, (err, foundUsers) => {
     if (err)
       res.json({ error : err });
@@ -13,7 +13,7 @@ routes.get('/', middleware.isLoggedIn, function(req, res) {
 });
 
 // CREATE route
-routes.post('/', middleware.isLoggedIn, function(req, res) {
+routes.post('/', middleware.isAdmin, function(req, res) {
   var newUser = new User({ username : req.body.username });
   User.register(newUser, req.body.password, function(err, user) {
     if (err)
@@ -23,7 +23,7 @@ routes.post('/', middleware.isLoggedIn, function(req, res) {
 });
 
 // DELETE route
-routes.delete('/:id', middleware.isLoggedIn, function(req, res) {
+routes.delete('/:id', middleware.isAdmin, function(req, res) {
   User.findByIdAndRemove(req.params.id, err => {
     if (err)
       res.json({ error : err });

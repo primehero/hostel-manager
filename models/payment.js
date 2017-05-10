@@ -1,4 +1,7 @@
 var mongoose = require("mongoose");
+var utils			= require('../krypton/functions');
+
+mongoose.Promise = global.Promise;
 
 var paymentSchema =
 mongoose.Schema({
@@ -27,5 +30,23 @@ mongoose.Schema({
 		default: Date.now()
 	}
 });
+
+// Filters by creator id
+paymentSchema.query.byCreator = utils.byCreator;
+// Static for searching by id and checking owner.
+paymentSchema.query.checkOwner = utils.checkOwner;
+
+// METHODS
+// ====
+// FINDBYID
+paymentSchema.statics.rjFindById =
+	utils.rjFindById;
+// UPDATE
+paymentSchema.statics.rjFindByIdAndUpdate =
+	utils.rjFindByIdAndUpdate;
+// REMOVE
+paymentSchema.statics.rjFindByIdAndRemove =
+	utils.rjFindByIdAndRemove;
+
 
 module.exports = mongoose.model("Payment", paymentSchema);

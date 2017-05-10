@@ -1,3 +1,8 @@
+/**
+ * PAYMENT ROUTES
+ * ====
+ */
+
 var routes = require("express").Router();
 var Payment = require("../models/payment");
 var Tenant = require("../models/tenant");
@@ -7,6 +12,7 @@ var middleware = require("../krypton/middleware");
 // INDEX route
 routes.get("/", middleware.isLoggedIn, (req, res) => {
 	Payment.find({})
+		.byCreator(req.user)
 		.populate('tenant')
 		.exec((err, foundPayments) => {
 			if (err)
@@ -20,48 +26,42 @@ routes.post("/", middleware.isLoggedIn, (req, res) => {
 	Payment.create(req.body, (err, createdPayment) => {
 		if (err)
 			res.json({ error : err });
-		// Find it's tenant	
-		Tenant.findById(createdPayment.tenant, (err, foundTenant) => {
-			if (err)
-				res.json({ error : err });	
-			// Copy creator
-			createdPayment._creator = foundTenant._creator;
-			createdPayment.save((err) => {
+		else {
+			// Find it's tenant
+			Tenant.findById(createdPayment.tenant, (err, foundTenant) => {
 				if (err)
 					res.json({ error : err });
-				res.json({ msg : "Created new payment!" });		
-			});
-		});			
-	});
+				// Copy creator
+				createdPayment._creator = foundTenant._creator;
+				createdPayment.save((err) => {
+					if (err)
+						res.json({ error : err });
+					res.json({ msg : "Created new payment!" });
+				});
+			}); // FindById
+		} // else
+
+		}); // Create
 });
 
 // SHOW route
 routes.get("/:id", middleware.isLoggedIn, (req, res) => {
-	Payment.findById(req.params.id)
-	 	.populate('tenant')
-		.exec((err, foundPayment) => {
-			if (err)
-				res.json({ error : err });
-			res.json({ payment : foundPayment });
-	});
+	Payment.rjFindById(
+		req.params.id, 'tenant',
+		req.user, res );
 });
 
 // UPDATE route
 routes.put("/:id", middleware.isLoggedIn, (req, res) => {
-	Payment.findByIdAndUpdate(req.params.id, { $set : req.body }, (err, updatedPayment) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ msg : "Updated payment Successfully!" });		
-	});
+	Payment.rjFindByIdAndUpdate(
+		req.params.id, req.user,
+		res, req.body );
 });
 
 // DELETE route
 routes.delete("/:id", middleware.isLoggedIn, (req, res) => {
-	Payment.findByIdAndRemove(req.params.id, (err) => {
-		if (err)
-			res.json({ error : err });
-		res.json({ msg : "Deleted payment Successfully!" });		
-	});
+	Payment.rjFindByIdAndRemove(
+		req.params.id, req.user, res );
 });
 
 

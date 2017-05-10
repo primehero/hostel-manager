@@ -95,7 +95,7 @@
         templateUrl: "/app/templates/tenant/show.html",
         controller: "TenantShowCtrl"
       })
-      // Edit 
+      // Edit
       .when("/tenant/:id/edit", {
         templateUrl: "/app/templates/tenant/edit.html",
         controller: "TenantEditCtrl"
@@ -108,15 +108,15 @@
         templateUrl: "/app/templates/payment/index.html",
         controller: "PayCtrl"
       })
+      // NEW
+      .when("/payment/new", {
+        templateUrl: "/app/templates/payment/new.html",
+        controller: "PayNewCtrl"
+      })
       // SHOW
       .when("/payment/:id", {
         templateUrl: "/app/templates/payment/show.html",
         controller: "PayShowCtrl"
-      })
-      // NEW
-      .when("/payment/:id", {
-        templateUrl: "/app/templates/payment/new.html",
-        controller: "PayNewCtrl"
       })
       // Edit
       .when("/payment/:id/edit", {
@@ -133,7 +133,7 @@
         templateUrl: "/app/templates/user/index.html",
         controller: "UserCtrl"
       })
-      // SHOW
+      // NEW
       .when("/user/new", {
         templateUrl: "/app/templates/user/new.html",
         controller: "UserNewCtrl"
