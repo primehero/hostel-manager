@@ -27,6 +27,7 @@ var dlt = function($http, $rootScope, url, id) {
       $rootScope.heading2 = undefined;
       $rootScope.success  = undefined;
       $rootScope.error    = undefined;
+      $rootScope.newLink  = undefined;
       CurrentUser.get($rootScope);
 
       $http.get('/hostel')
